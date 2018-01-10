@@ -1,0 +1,38 @@
+<!--pages/orders/orders.wxml-->
+<view class="content">
+  <view  wx:if='{{orderList.length >= 1}}' class='order-wrapper'>
+    <view wx:for='{{orderList}}' wx:key="item.id" class='order-item-wrapper'>
+       <view class='order-address-wrapper'>
+        <text class='order-address-text'>{{item.s_name}}</text>
+      </view> 
+      <view class='order-info-wrapper'>
+        <view class='order-info-left-wrapper'>
+          <block wx:for='{{item.goods}}'>
+            <text class='order-info-goods'>{{item.name}}</text>
+          </block>
+          <text class='order-info-item'>共{{item.goodsCount}}件商品</text>
+          <!-- <text class='order-info-item'>合计：￥{{item.price}}</text> -->
+          <!-- <text class='order-info-item'>优惠：￥{{item.discount}}</text> -->
+        </view>
+        <view class='order-info-right-wrapper'>
+          <view class='order-info-paytype-wrapper'>
+            <text>{{item.status}}</text>
+          </view>
+          <view class='order-info-time-wrapper'>
+            <text class='order-info-time'>下单时间：{{item.create_time}}</text>
+          </view>
+        </view>   
+      </view>
+      <view class='order-btm-wrapper'>
+        <text class='order-btm-payprice theme-color'>实付：￥{{item.total}}</text>
+        <button class='order-btm-detailbtn theme-bg' data-url='../orderdetail/orderdetail?oid={{item.oid}}' bindtap='navigateToPage'>订单详情</button>
+      </view>  
+    </view>
+  </view>
+  <view class='nogoods-wrapper' wx:else>
+    <view class='nogoods-bg-wrapper'>
+      <image class='nogoods-bg-img' src='../../assets/img/nogoods_bg.png'></image>
+      <text class='nogoods-bg-text'>小主，您的订单列表是空的哦~</text>
+    </view>
+  </view>
+</view>

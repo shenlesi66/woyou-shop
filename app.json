@@ -1,0 +1,43 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/shopcart/shopcart",
+    "pages/my/my",
+    "pages/feedback/feedback",
+    "pages/orders/orders",
+    "pages/orderdetail/orderdetail",
+    "pages/manual/manual",
+    "pages/pay/pay"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#fe2d4c",
+    "navigationBarTitleText": "我有便利",
+    "navigationBarTextStyle": "#fff"
+  },
+  "tabBar": {
+    "backgroundColor": "#fff",
+    "color": "#000",
+    "selectedColor":"#000",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页",
+        "iconPath": "assets/img/home.png",
+        "selectedIconPath": "assets/img/home_selected.png"
+      },
+      {
+        "pagePath": "pages/shopcart/shopcart",
+        "text": "购物车",
+        "iconPath": "assets/img/cart.png",
+        "selectedIconPath": "assets/img/cart_selected.png"
+      },
+      {
+        "pagePath": "pages/my/my",
+        "text": "个人中心",
+        "iconPath": "assets/img/my.png",
+        "selectedIconPath": "assets/img/my_selected.png"
+      }
+    ]
+  }
+}

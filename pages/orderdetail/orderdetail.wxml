@@ -1,0 +1,49 @@
+<!--pages/orderdetail/orderdetail.wxml-->
+<view class='content'>
+  <view class='type-wrapper'>
+    <view class='title-wrapper'>
+      <text>订单信息</text>
+    </view>
+    <view class='type-text-wrapper'>
+      <text class='type-text'>订单状态：{{status}}</text>
+      <!-- <text class='type-text'>支付方式：{{payType}}</text> -->
+      <text class='type-text'>订单时间：{{time}}</text>
+      <text class='type-text'>订单编号：{{oNo}}</text>
+    </view>
+  </view>
+  <view class='goods-wrapper'>
+    <view class='title-wrapper'>
+      <text>商品明细</text>
+    </view>
+    <block wx:for='{{goods}}' wx:key='item.oid'>
+      <view class='goods-item-wrapper'>
+        <text class='goods-item-goods'>{{item.name}}</text>
+        <text class='goods-item-count theme-color'>{{item.num}}</text>
+        <text class='goods-item-price theme-color'>￥{{item.price}}</text>
+      </view>
+    </block>
+  </view>
+  <view class='price-wrapper'>
+    <view class='title-wrapper'>
+        <text>优惠金额</text>
+      </view>
+     <view class='price-detail-wrapper'>
+      <view class='price-detail-item-wrapper'>
+        <text class='price-key'>商品总额</text>
+        <text class='price-val theme-color'>￥{{total}}</text>
+      </view>
+      <!-- <view class='price-detail-item-wrapper'>
+        <text class='price-key'>优惠券</text>
+        <text class='price-val theme-color'>￥{{discount}}</text>
+      </view>
+      <view class='price-detail-item-wrapper'>
+        <text class='price-key'>特价减免</text>
+        <text class='price-val theme-color'>￥{{activity}}</text>
+      </view> -->
+    </view> 
+    <view class='price-payprice-wrapper'>
+      <text class='price-key'>实付</text>
+      <text class='price-val theme-color'>￥{{total}}</text>
+    </view>
+   </view>  
+</view>

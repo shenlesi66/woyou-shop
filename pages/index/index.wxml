@@ -1,0 +1,46 @@
+<!--index.wxml-->
+<view class="content">
+  <image class='bg' src='../../assets/img/index_bg.png' mode='widthFix'></image>
+  <view class='swiper-wrapper'>
+    <image class='ad-img' src='../../assets/img/slider.jpg' mode='widthFix'></image>
+    <!-- <swiper indicator-dots="{{swiper.indicatorDots}}"
+    autoplay="{{swiper.autoplay}}" interval="{{swiper.interval}}" duration="{{swiper.duration}}">
+      <block wx:for="{{swiper.imgUrls}}">
+        <swiper-item>
+          <image src="{{item}}" mode='aspectFit' class="slide-image"/>
+        </swiper-item>
+      </block>
+    </swiper> -->
+  </view>    
+  <view class='scan-address theme-bg' bindtap='scanCode'>
+    <text class='iconfont icon-erweima'></text>
+    <text class='scan-address-text' wx:if="{{seller.name}}">{{seller.name}}</text>
+    <text class='scan-address-text' wx:else>请扫描二维码选择货架</text> 
+  </view>
+  <view class='ad-wrapper'>
+    <image class='ad-img' src='../../assets/img/ad.jpg' mode='widthFix'></image>
+  </view>
+   <!-- <view class='newfoods-wrapper'>
+    <view class="newfoods-title-wrapper">
+      <text class="newfoods-title-text">零食上新</text>
+    </view>
+    <view class="newfoods-list-wrapper">
+      <scroll-view class="scroll-view-H" scroll-x="true" style="width: 100%">
+        <block wx:for='{{newGoods}}'>
+          <view class="scroll-view-item-H">
+            <image class="newfoods-item-img" src='{{item.imgUrl}}'></image>
+            <text class='newfoods-item-name'>{{item.name}}</text>
+            <text class='newfoods-item-price'>￥{{item.price}}</text>
+          </view>
+        </block>
+      </scroll-view>
+    </view>
+  </view>  -->
+  <!-- <view class='scan-goods-wrapper'>
+    <button class='scan-goods-btn theme-bg'>快扫描商品条码吧</button>
+  </view> -->
+  <!-- <view class="news-wrapper">
+    <text class='news-text-title'>新增货架：</text>
+    <text class='news-text-content'>长江路潮创会，长江路潮创会，长江路潮创会，长江路潮创会·</text>
+  </view> -->
+</view>

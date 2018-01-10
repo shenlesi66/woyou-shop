@@ -1,0 +1,18 @@
+@font-face {
+  font-family: 'iconfont';  /* project id 465518 */
+  src: url('//at.alicdn.com/t/font_465518_sgj4kzkcbwva38fr.eot');
+  src: url('//at.alicdn.com/t/font_465518_sgj4kzkcbwva38fr.eot?#iefix') format('embedded-opentype'),
+  url('//at.alicdn.com/t/font_465518_sgj4kzkcbwva38fr.woff') format('woff'),
+  url('//at.alicdn.com/t/font_465518_sgj4kzkcbwva38fr.ttf') format('truetype'),
+  url('//at.alicdn.com/t/font_465518_sgj4kzkcbwva38fr.svg#iconfont') format('svg');
+}
+
+.iconfont {
+  font-family:"iconfont" !important;
+  font-size:16px;
+  font-style:normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-dingwei:before { content: "\e62d"; }

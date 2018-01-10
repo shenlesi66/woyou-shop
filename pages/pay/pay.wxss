@@ -1,0 +1,90 @@
+/* pages/pay/pay.wxss */
+.goods-wrapper{
+  margin-bottom: 25rpx;  
+}
+.goods-item-wrapper{
+  display: flex;
+  padding: 37rpx 26rpx;
+  background-color: #fff;
+  border-bottom: 1rpx solid #b5b5b5;
+  font-size: 28rpx;
+}
+.goods-item-wrapper:last-child{
+  border-bottom: none;
+}
+.goods-item-goods{
+  flex: 1;
+}
+.goods-item-count{
+  margin-right: 10rpx;
+  font-weight: 700;
+}
+.goods-item-price{
+  flex-basis: 150rpx;
+  text-align: right;
+  font-weight: 700;  
+}
+.price-wrapper{
+  background-color: #fff;
+}
+.price-detail-wrapper{
+  padding: 44rpx 26rpx;  
+  font-size: 25rpx;
+}
+.price-detail-item-wrapper{
+  display: flex;
+  margin-bottom: 51rpx;  
+}
+.price-detail-item-wrapper:last-child{
+  margin-bottom: 0;
+}
+.price-payprice-wrapper{
+  display: flex;
+  padding: 44rpx 26rpx;    
+  font-size: 32rpx;
+  font-weight: 700;  
+}
+.price-key{
+  flex: 1;
+}
+.price-val{
+  font-weight: 700;
+}
+.tips-wrapper{
+  margin-top: 36rpx;
+  font-size: 25rpx;
+  text-align: center;
+}
+.pay-wrapper{
+  display: flex;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 125rpx;
+  font-size: 32rpx;  
+  font-weight: 700;
+}
+.pay-left-wrapper{
+  flex: 3;
+  background-color: #fff;
+  text-align: center;
+  line-height: 125rpx;
+}
+.pay-right-wrapper{
+  flex: 2;
+  text-align: center;
+}
+.pay-btn{
+  color: #fff;
+  border-radius: 0;
+  font-size: 35rpx;
+  line-height: 125rpx;
+}
+button[disabled][type="default"], wx-button[disabled]:not([type]) {
+  background-color:#fe2d4c;
+  color: #fff;
+}
+.price-total-wrapper{
+  background-color: #fff;
+  margin-bottom: 10rpx;
+}

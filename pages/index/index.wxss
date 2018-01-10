@@ -1,0 +1,122 @@
+/**index.wxss**/
+@import '../../assets/font/iconfont.wxss';
+page{
+  height: 100%;
+}
+.content{
+  height: 100%;
+}
+.bg{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
+.news-wrapper{
+  display: flex;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  align-items: center;
+  width: 100%;
+  height: 40rpx;
+  background-color: #d3d3d3;
+}
+.news-text-title{
+  padding-left: 24rpx;
+  font-size: 20rpx;
+  color: #595959;
+}
+.news-text-content{
+  flex: 1;
+  font-size: 20rpx;
+  color: #595959;
+}
+.scan-goods-wrapper{
+  padding: 29rpx 0;
+}
+.scan-goods-btn{
+  display: flex;
+  align-items: center;
+  padding: 0 49rpx;
+  height: 87rpx;
+  font-size: 28rpx;
+  color: #fefefe;
+}
+.newfoods-title-wrapper{
+  display: flex;
+  align-items: center;
+  padding: 0 35rpx;
+  height: 40rpx;
+  background-color: #e51279;
+  color: #fff;
+}
+.newfoods-title-text{
+  font-size: 24rpx;
+}
+.newfoods-wrapper{
+  width: 100%;
+  border-bottom: 1rpx solid #828080;
+}
+.newfoods-item-img{
+  width: 186rpx;
+  height: 186rpx;  
+}
+.newfoods-item-name{
+  display: block;  
+  width: 186rpx;
+  font-size: 16rpx;
+}
+.newfoods-item-price{
+  display: block;
+  color: #e51c23;  
+  font-size: 18rpx;
+}
+.scroll-view-H{
+  white-space: nowrap;
+}
+.scroll-view-item-H:first-child{
+  margin-left: 22rpx;
+}
+.scroll-view-item-H {
+  display: inline-block;
+  margin: 20rpx 24rpx 26rpx 0
+}
+.swiper-wrapper {
+  width: 100%;
+}
+.slide-image{
+  width: 100%;
+  height: 100%;
+}
+.icon-erweima {
+  top: -10rpx;
+  left: 20rpx;
+  font-size: 50rpx;
+}
+.scan-address {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 161rpx 92rpx;  
+  padding: 0 30rpx;
+  height: 87rpx;
+  border-radius: 20rpx;
+  text-align: center;
+  font-size: 28rpx;    
+  color: #fff;
+}
+.scan-address-text {
+  margin-left: 24rpx;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.ad-wrapper{
+  width: 100%;
+}
+.ad-img{
+  width: 100%;
+}

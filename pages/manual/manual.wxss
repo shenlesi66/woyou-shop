@@ -1,0 +1,39 @@
+/* pages/manual/manual.wxss */
+page{
+  height: 100%;
+}
+.content{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: auto 0;
+  padding: 28rpx 83rpx 0 83rpx; 
+  height: 100%;  
+  box-sizing: border-box;
+}
+.manual-bg{
+  margin-bottom: 51rpx;
+  width: 100%;
+  box-sizing: border-box;
+}
+.manual-ipt{
+  margin: 0 35rpx;
+  padding: 0 35rpx;
+  height: 87rpx;
+  line-height: 87rpx;
+  border-radius: 15rpx;
+  box-sizing: border-box;
+  font-size: 28rpx;  
+}
+.manual-placeholder{
+  color: #424242;
+}
+.manual-btn{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 35rpx;
+  height: 87rpx;
+  line-height: 87rpx;
+  color: #fff;
+}

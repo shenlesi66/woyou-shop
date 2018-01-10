@@ -1,0 +1,94 @@
+/* pages/orders/orders.wxss */
+page,.content{
+  height: 100%;
+}
+.order-item-wrapper{
+  margin-bottom: 30rpx;
+}
+.order-item-wrapper:last-child{
+  margin-bottom: 0;
+}
+.order-address-wrapper,
+.order-info-wrapper,
+.order-btm-wrapper{
+  padding: 39rpx 28rpx;
+  background-color: #fff;
+  border-bottom: 1rpx solid #b5b5b5;
+}
+.order-address-text{
+  font-size: 28rpx;
+}
+.order-info-wrapper{
+  display: flex;
+}
+.order-info-left-wrapper{
+  flex: 1;
+}
+.order-info-right-wrapper{
+  display: flex;
+  position: relative;
+  flex-direction: row;
+}
+.order-info-item{
+  display: block;
+  margin-bottom: 13rpx; 
+  font-size: 21rpx;
+  color: #424242;
+}
+.order-info-goods{
+  display: block;
+  margin-bottom: 16rpx;  
+  font-size: 28rpx;  
+}
+.order-info-paytype-wrapper{
+  position: absolute;
+  right: 0;
+  font-size: 28rpx;
+}
+.order-info-time-wrapper{
+  align-self:  flex-end;
+}
+.order-info-time{
+  vertical-align: bottom;  
+  font-size: 21rpx;
+}
+.order-btm-wrapper{
+  display: flex;
+  border-bottom: none;    
+}
+.order-btm-payprice{
+  display: flex;
+  align-items: center;
+  flex: 1;
+  font-size: 28rpx;
+  font-weight: 700;
+}
+.order-btm-detailbtn{
+  display: flex;
+  align-items: center;
+  height: 53rpx;
+  font-size: 28rpx;
+  border: none;
+  border-radius: 25rpx;
+  color: #fff;
+}
+.nogoods-wrapper{
+  height: 100%;
+}
+.nogoods-bg-wrapper{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+.nogoods-bg-img{
+  width: 188rpx;
+  height: 308rpx;
+}
+.nogoods-bg-text{
+  margin-top: 35rpx;
+  color: #424242;
+  font-size: 28rpx;
+}

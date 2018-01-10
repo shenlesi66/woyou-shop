@@ -1,0 +1,22 @@
+<!--pages/my/my.wxml-->
+<view class='content'>
+  <view class="userinfo">
+    <block wx:if="{{hasUserInfo && canIUse}}" >
+       <image class="userinfo-avatar" src="{{userInfo.avatarUrl}}" background-size="cover"></image> 
+      <text class="userinfo-nickname">{{userInfo.nickName}}</text>
+    </block>
+    <block wx:else>
+      <view class='userinfo-avatar no-userinfo-avatar'></view>
+      <text class="userinfo-nickname">{{userInfo.nickName}}</text>      
+      <button class='get-userinfo theme-color' open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 获取头像昵称 </button>
+    </block>
+  </view>
+  <view class='options-wrapper'>
+    <block wx:for='{{options}}'>
+      <view class='options-item-wrapper' data-url='{{item.url}}' bindtap='navigateToPage'>
+        <text class="iconfont {{item.icon}}"></text>
+        <text class="options-item-text">{{item.text}}</text>
+      </view>
+    </block>
+  </view>
+</view>

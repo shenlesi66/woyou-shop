@@ -1,0 +1,45 @@
+<!--pages/pay/pay.wxml-->
+<!--pages/orderdetail/orderdetail.wxml-->
+<view class='content'>
+  <view class='goods-wrapper'>
+    <block wx:for='{{cartList}}' wx:key='item.id'>
+      <view class='goods-item-wrapper'>
+        <text class='goods-item-goods'>{{item.name}}</text>
+        <text class='goods-item-count theme-color'>{{item.num}}</text>
+        <text class='goods-item-price theme-color'>￥{{item.price}}</text>
+      </view>
+    </block>
+  </view>
+  <view class='price-total-wrapper'>
+    <view class='price-detail-wrapper'>
+      <view class='price-detail-item-wrapper'>
+        <text class='price-key'>商品总额</text>
+        <text class='price-val theme-color'>￥{{totalPrice}}</text>
+      </view>
+    </view>
+  </view>
+  <!-- <view class='price-wrapper'>
+    <view class='price-detail-wrapper'>
+       <view class='price-detail-item-wrapper'>
+        <text class='price-key'>优惠券</text>
+        <text class='price-val theme-color'>￥{{discount}}</text>
+      </view> 
+       <view class='price-detail-item-wrapper'>
+        <text class='price-key'>特价减免</text>
+        <text class='price-val theme-color'>￥{{activity}}</text>
+      </view> 
+    </view>
+   </view>   -->
+  <view class='tips-wrapper theme-color'>
+    <text>温馨提示：支付完成后请携带好购买的商品</text>
+  </view>
+  <view class='pay-wrapper'>
+    <view class='pay-left-wrapper'>
+      <text>实际支付：</text>
+      <text class='pay-left-price theme-color'>￥{{totalPrice}}</text>
+    </view>
+    <view class='pay-right-wrapper' bindtap='addOrder'>
+      <button class='pay-btn  theme-bg' disabled='{{disabled}}'>确认支付</button>
+    </view>
+  </view>
+</view>

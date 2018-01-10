@@ -1,0 +1,22 @@
+/**app.wxss**/
+page{
+  background-color: #f7f7f7;
+}
+.theme-bg{
+  background-color: #fe2d4c;
+}
+.theme-color{
+  color: #e51c23;
+}
+.theme-border{
+  border: 1rpx solid #e51c23;
+  /* border: 1rpx solid #fe2d4c; */
+}
+.container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+}
