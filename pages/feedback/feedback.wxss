@@ -5,10 +5,11 @@
 .feedback-txt{
   padding: 33rpx 5%;
   width: 90%;
-  border: 1rpx solid #b5b5b5;
+   border: 1rpx solid #b5b5b5; 
   border-radius: 15rpx;
   color: #424242;
   font-size: 28rpx;
+  background-color: #fff;
 }
 .feedback-btm-wrapper{
   margin: 40rpx auto;  
@@ -16,10 +17,12 @@
   text-align: center;  
 }
 .feedback-btm-btn{
-  margin-bottom: 28rpx;
   height: 87rpx;
   color: #fff;
   font-size: 35rpx;
+}
+.page-section {
+  background-color: #fff;
 }
 .page-section-title{
   height: 50rpx;
@@ -31,7 +34,7 @@
 }
 .ipt{
   padding: 13rpx 5%;
-  border: 1rpx solid #b5b5b5;
+   border: 1rpx solid #b5b5b5; 
   border-radius: 15rpx;
   font-size: 28rpx;
 }

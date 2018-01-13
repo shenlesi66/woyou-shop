@@ -1,24 +1,25 @@
 <!--pages/feedback/feedback.wxml-->
 <view class='content'>
-  <view class='page-section'>
-    <!-- <view class='page-section-title'>手机号码：</view> -->
-    <view class='ipt-wrapper'>
-      <input class='ipt' placeholder='请输入您的手机号码'></input>
+  <form bindsubmit='handleSubmit'>
+    <view class='page-section'>
+      <!-- <view class='page-section-title'>手机号码：</view> -->
+      <view class='ipt-wrapper'>
+        <input class='ipt' name='phone' type='number' maxlength='11' placeholder='{{phone.placeholder}}' value='18575130464'></input>
+      </view>
     </view>
-  </view>
-  <view class='page-section'>
-    <!-- <view class='page-section-title'>公司名称：</view> -->
-    <view class='ipt-wrapper'>
-      <input class='ipt' placeholder='请输入您的公司名称'></input>
+    <view class='page-section'>
+      <!-- <view class='page-section-title'>公司名称：</view> -->
+      <view class='ipt-wrapper'>
+        <input class='ipt' name='name' value='沃有' placeholder='{{company.placeholder}}'></input>
+      </view>
     </view>
-  </view>
-   <view class='feedback-txt-wrapper'>
-    <textarea class='feedback-txt' placeholder='{{placeholder}}'></textarea>
-  </view>
-  <view class='feedback-btm-wrapper'>
-    <button class='feedback-btm-btn theme-bg'>确定</button> 
-    
-  </view>
+    <view class='feedback-txt-wrapper'>
+      <textarea class='feedback-txt' name='content' value='哒哒哒哒哒哒哒哒哒' placeholder='{{feedback.placeholder}}'></textarea>
+    </view>
+    <view class='feedback-btm-wrapper'>
+      <button class='feedback-btm-btn theme-bg' form-type='submit'>确定</button> 
+    </view>
+  </form>
   <view class='tips-wrapper'>
     <text class='tips-text'>提交意见后，客服会在24小时内联系您，请您保持电话通畅。</text>
     <text class='tips-text'>如您不希望被打扰，请备注说明。</text>

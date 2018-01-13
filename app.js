@@ -4,7 +4,16 @@ const loginServer = require('./config').loginServer,
       getGoodsServer = require('./config').getGoodsServer
 App({
   onLaunch: function () {
-    //获取登录状态
+    // wx.request({
+      // url: 'https://www.stwoyou.com/api/Test/index',
+      // header: { 'content-type': 'application/x-www-form-urlencoded', 'Cookie': 'PHPSESSID=' + this.handleGetToken() },
+      // success: res=>{
+      //   // let token = res.data.data.token//服务器token
+      //   // wx.setStorageSync('token', token)//token写入本地
+      //   console.log(res)
+      // }
+    // })
+    // //获取登录状态
     this.handleLogin()
   },
   globalData: {
@@ -220,5 +229,5 @@ App({
         })
       }
     })
-  }
+  },
 })
