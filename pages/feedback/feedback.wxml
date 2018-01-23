@@ -4,17 +4,17 @@
     <view class='page-section'>
       <!-- <view class='page-section-title'>手机号码：</view> -->
       <view class='ipt-wrapper'>
-        <input class='ipt' name='phone' type='number' maxlength='11' placeholder='{{phone.placeholder}}' value='18575130464'></input>
+        <input class='ipt' name='phone' type='number' maxlength='11' placeholder='{{phone.placeholder}}'></input>
       </view>
     </view>
     <view class='page-section'>
       <!-- <view class='page-section-title'>公司名称：</view> -->
       <view class='ipt-wrapper'>
-        <input class='ipt' name='name' value='沃有' placeholder='{{company.placeholder}}'></input>
+        <input class='ipt' name='name' placeholder='{{company.placeholder}}'></input>
       </view>
     </view>
     <view class='feedback-txt-wrapper'>
-      <textarea class='feedback-txt' name='content' value='哒哒哒哒哒哒哒哒哒' placeholder='{{feedback.placeholder}}'></textarea>
+      <textarea class='feedback-txt' name='content' placeholder='{{feedback.placeholder}}'></textarea>
     </view>
     <view class='feedback-btm-wrapper'>
       <button class='feedback-btm-btn theme-bg' form-type='submit'>确定</button> 

@@ -1,16 +1,54 @@
 // pages/shopcart/shopcart.js
 const getCodeServer = require('../../config').getCodeServer,
-      getGoodsServer = require('../../config').getGoodsServer
+      getGoodsServer = require('../../config').getGoodsServer,
+      event = require('../../utils/event')
 var app = getApp()
 Page({
   /**
    * 页面的初始数据
    */
   data: {
-    delCarList: false,
     seller:null,
     cartList: [],
     totalPrice: 0
+  },
+  /**
+ * 生命周期函数--监听页面加载
+ * 公共函数
+ * cartListChanged 更新购物车列表
+ * cartSellerChanged 更新购物车商家名称
+ */
+  onLoad: function (options) {
+    event.on('cartListChanged', this, function (data) {
+      this.setData({
+        cartList: data
+      })
+      this.getTotalPrice();
+    })
+    event.on('cartSellerChanged', this, function (seller) {
+      this.setData({
+        seller
+      })
+    })
+    let appData = app.globalData
+    //获取货架信息
+    if (appData.seller) {
+      this.setData({
+        seller: appData.seller
+      })
+    }
+    //遍历globalData购物车
+    if (appData.cartList.length) {
+      this.setData({
+        cartList: appData.cartList
+      })
+      //重新计算总价
+      this.getTotalPrice();
+    }
+  },
+  onUnload: function () {
+    event.remove('cartListChanged', this);
+    event.remove('cartSellerChanged', this);
   },
   //点击跳转页面
   navigateToPage: function (e) {
@@ -27,6 +65,7 @@ Page({
       this.setData({
         cartList
       })
+      app.globalData.cartList = cartList
       this.getTotalPrice()
     } else {
       wx.showModal({
@@ -52,6 +91,7 @@ Page({
             that.setData({
               cartList
             })
+            app.globalData.cartList = cartList
             that.getTotalPrice()
             //购物车无商品显示页面
             if (!cartList.length) {
@@ -68,6 +108,7 @@ Page({
       this.setData({
         cartList
       })
+      app.globalData.cartList = cartList
       this.getTotalPrice()
     }
   },
@@ -94,6 +135,7 @@ Page({
     this.setData({
       cartList
     })
+    app.globalData.cartList = cartList
     //重新获取价格
     this.getTotalPrice()      
   },
@@ -128,39 +170,14 @@ Page({
           let self = this
           let options = {
             url: res.result,
-            hideLoadding: true
-          }
-          options.fn = function (e) {
-            let seft = this
-            let data = e.data.data
-            let seller = wx.getStorageSync('seller')
-            if (seller) {
-              //货架不一致
-              if (data.id !== seller.id) {
-                app.globalData.cartList = []//删除购物车缓存
-                // wx.setStorageSync('cartList', []) //删除购物车缓存
-                self.setData({
-                  cartList: []
-                })
-              }
+            hideLoadding: true,
+            childFn: ()=> {
+              wx.showToast({
+                title: '成功',
+                icon: 'success',
+                duration: 2000
+              })
             }
-            //商家信息存入本地缓存
-            //下次启动小程序不用重新扫描相同货架的二维码
-            wx.setStorageSync('seller', {
-              id: data.id,
-              name: data.name
-            })
-            self.setData({
-              seller: {
-                id: data.id,
-                name: data.name
-              }
-            })
-            wx.showToast({
-              title: '成功',
-              icon: 'success',
-              duration: 2000
-            })
           }
           app.handleScanQrCode(options)    
         } else {
@@ -171,11 +188,10 @@ Page({
         }
       }
     })
-    
   },
   //扫描商品条码
   scanBarCode: function () {
-    if (!this.data.seller){
+    if (!app.globalData.seller){
       wx.showModal({
         content: '请先扫描货架二维码',
         success:res=>{
@@ -196,93 +212,11 @@ Page({
             return
           }
           //扫描条形码
-          let self = this
           let options = {
             barcode: res.result * 1
           }
-          options.fn = function (res) {
-            //扫描成功配置商品信息
-            let data = res.data.data
-            let newGoods = {
-              id: data.id,
-              barcode: data.barcode,
-              name: data.name,
-              price: data.price,
-              num: 1
-            }
-            //获取购物车列表
-            let cartList = self.data.cartList
-            //是否有相同商品
-            let hasGoods = false
-            //购物车无商品直接把扫描商品添加进购物车
-            if (cartList.length === 0) {
-              cartList.push(newGoods)
-            } else {
-              //循环购物车列表
-              cartList.map((item) => {
-                if (newGoods.id === item.id) {
-                  //购物车有相同商品数量自增1
-                  item.num += 1
-                  hasGoods = true
-                }
-              })
-              //购物车无相同商品，把新商品加入购物车
-              if (!hasGoods) {
-                cartList.unshift(newGoods)
-              }
-            }
-            //购物车更新
-            self.setData({
-              cartList
-            })
-            //重新计算合计价格
-            self.getTotalPrice()
-          }
-          //调用handleScan函数
           app.handleScanBarCode(options)   
         }
-      })
-    }
-  },
-  /**
-   * 生命周期函数--监听页面加载
-   */
-  onLoad: function (options) {
-    let self = this
-    let cartList = app.globalData.cartList
-    //获取货架信息
-    wx.getStorage({
-      key: 'seller',
-      success: function(res) {
-        self.setData({
-          seller: res.data
-        })
-      },
-    })
-    //存入一个空数组
-    //遍历缓存数据进购物车
-    //缓存数据不为空
-    if (cartList.length) {
-      this.setData({
-        cartList
-      })
-      //重新计算总价
-      this.getTotalPrice();
-    }
-  },
-  //切换页面缓存购物车数据
-  onHide: function () {
-    this.addCartListToStor()
-  },
-  addCartListToStor(){
-    let cartList = this.data.cartList
-    let delCarList = this.data.delCarList
-    //购物车无商品 || 删除购物车最后一件商品标记
-    if (cartList.length || delCarList) {
-      app.globalData.cartList = cartList
-      //删除购物车最后一件商品之后，还能同步缓存数据
-      this.setData({
-        delCarList: true
       })
     }
   }

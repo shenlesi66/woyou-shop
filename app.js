@@ -1,27 +1,31 @@
 //app.js
 const loginServer = require('./config').loginServer,
       getCodeServer = require('./config').getCodeServer,
-      getGoodsServer = require('./config').getGoodsServer
+      getGoodsServer = require('./config').getGoodsServer,
+      event = require('./utils/event')
 App({
   onLaunch: function () {
-    // wx.request({
-      // url: 'https://www.stwoyou.com/api/Test/index',
-      // header: { 'content-type': 'application/x-www-form-urlencoded', 'Cookie': 'PHPSESSID=' + this.handleGetToken() },
-      // success: res=>{
-      //   // let token = res.data.data.token//服务器token
-      //   // wx.setStorageSync('token', token)//token写入本地
-      //   console.log(res)
-      // }
-    // })
-    // //获取登录状态
-    this.handleLogin()
+    let self = this
+    //获取登录状态
+    self.handleLogin()
+    wx.getStorage({
+      key: 'seller',
+      success: function(res) {
+        self.globalData.seller = res.data
+        // 可能会在 Page.onLoad 之后才返回
+        // 所以此处加入 callback 以防止这种情况
+        if (self.sellerInfoReadyCallback) {
+          self.sellerInfoReadyCallback(res)
+        }
+      },
+    })
   },
   globalData: {
     userInfo: null,
-    seller: null,
     isNavigating: false,   
     failCount: 0,
     cartList: [],
+    token: ''
   },
   // 登录
   handleLogin: function (options) {
@@ -47,7 +51,7 @@ App({
               }
               //token存入缓存
               let token = res.data.data.token//服务器token
-              wx.setStorageSync('token', token)//token写入本地
+              this.globalData.token = token //token写入data
               //token不一致重新调用后台接口
               if (options) {
                 console.log('token不一致，重新登录')
@@ -65,13 +69,6 @@ App({
         }
       }
     })
-  },
-  //获取本地token
-  handleGetToken: function () {
-    let token = wx.getStorageSync('token')
-    if (token) {
-      return token
-    }
   },
   //调用接口判断token中转
   //options需要传入相应的data和success，fail代码
@@ -97,13 +94,17 @@ App({
   },
   //请求接口
   handleRequest: function (options) {
+    //传递当前时间戳
+    let time = Math.floor(new Date().getTime() / 1000)
+    options.uData.timestamp = time
     //获取本地token，options需自己传入
-    options.uData.token = this.handleGetToken()
     //token为空重新获取token
-    if (!options.uData.token) {
+    if (!this.globalData.token) {
       this.handleRequestVali(options, false) //验证函数
       this.globalData.failCount += 1 //重连次数+1
       return
+    } else {
+      options.uData.token = this.globalData.token 
     }
     //等待弹框
     if (!options.loadding){
@@ -115,6 +116,7 @@ App({
     wx.request({
       url: options.server,//接口地址
       method: 'POST',
+      header: {'Cookie': 'PHPSESSID=' + this.globalData.token},
       data: options.uData,//接口所需数据
       success: res => {
         let code = res.data.code
@@ -177,37 +179,56 @@ App({
   },
   //扫描条形码
   handleScanBarCode: function (options) {
-    let self = this
-    wx.getStorage({
-      key: 'seller',
-      success: function (res) {
-        let sid = res.data.id
-        options.uData = {
-          sid,
-          barcode: options.barcode
-        }
-        options.server = getGoodsServer
-        //请求服务器接口
-        self.handleRequestVali(options)
-      },
-      fail: function () {
-        wx.showModal({
-          content: '请先扫描货架',
-          showCancel: false
-        })
-        wx.hideLoading()
+    let self = this,
+        appData = this.globalData
+    if (appData.seller) {
+      options.uData = {
+        sid: appData.seller.id,
+        barcode: options.barcode
       }
-    })
+      options.server = getGoodsServer
+      options.fn = r => {
+        self.handleCarts(r)
+        if (options.childFn) {
+          options.childFn()
+        }
+      }
+      self.handleRequestVali(options)
+    } else {
+      wx.showModal({
+        content: '请先扫描货架二维码',
+        showCancel: false
+      })
+      wx.hideLoading()
+    }
   },
   //扫码
   handleScanQrCode: function (options) {
-    //获取链接参数
-    let id = options.url.split('/').pop()
     //扫货架码取得后台接口
-    options.uData = {
-      id
-    }
+    options.uData = { id: options.url.split('/').pop()}
     options.server = getCodeServer
+    options.fn = e => {
+      let seller = e.data.data,
+          appData = this.globalData
+      //商家信息存入本地缓存
+      //下次启动小程序不用重新扫描相同货架的二维码
+      wx.setStorageSync('seller', seller)
+      //首次扫描二维码货架
+      if (!appData.seller) {
+        appData.seller = seller
+      }
+      //商家不一致清空购物车
+      if (seller.id !== appData.seller.id) {
+        appData.seller = seller
+        appData.cartList = [] //删除购物车缓存
+        event.emit('cartListChanged', [])
+      }
+      if (options.childFn) {
+        options.childFn()
+      }
+      event.emit('indexSellerChanged', seller)
+      event.emit('cartSellerChanged', seller)
+    }
     //请求服务器接口
     this.handleRequestVali(options)
   },
@@ -230,4 +251,38 @@ App({
       }
     })
   },
+  handleCarts: function (res) {
+    //扫描成功配置商品信息
+    let data = res.data.data
+    let newGoods = {
+      id: data.id,
+      barcode: data.barcode,
+      name: data.name,
+      price: data.price,
+      num: 1
+    }
+    //获取购物车列表
+    let cartList = this.globalData.cartList
+    //是否有相同商品
+    let hasGoods = false
+    //购物车无商品直接把扫描商品添加进购物车
+    if (cartList.length === 0) {
+      cartList.push(newGoods)
+    } else {
+      //循环购物车列表
+      cartList.map((item) => {
+        if (newGoods.id === item.id) {
+          //购物车有相同商品数量自增1
+          item.num += 1
+          hasGoods = true
+        }
+      })
+      //购物车无相同商品，把新商品加入购物车
+      if (!hasGoods) {
+        cartList.unshift(newGoods)
+      }
+    }
+    this.globalData.cartList = cartList
+    event.emit('cartListChanged', cartList)
+  }
 })

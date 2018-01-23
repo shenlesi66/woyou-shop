@@ -1,179 +1,90 @@
 //index.js
-// const getCodeServer = require('../../config').getCodeServer
+const event = require('../../utils/event'),
+  getCodeServer = require('../../config').getCodeServer
 var app = getApp()
 Page({
-  data: {
-    wxToIndex:null,//微信扫码直接访问小程序
-    seller: {
-      id: null,
-    },
-    swiper: {
-      imgUrls: [
-        '../../assets/img/slider.jpg',
-      ],
-      autoplay: true,
-      interval: 5000,
-      duration: 1000,
-    }
-  },
+  //indexSellerChanged 公共更换首页货架名
   onLoad: function (options) {
+    event.on('indexSellerChanged', this, function (seller) {
+      this.setData({
+        seller
+      })
+    })
     //判断是否微信扫码进入
-    if(options.q){
-      let id = decodeURIComponent(options.q).split('/').pop()*1 //获取货架id
+    if (options.q) {
+      let url = decodeURIComponent(options.q) //获取货架连接
+      this.wxScanToIndex(url)
+    }
+    //获取商家ID，商家NAME
+    if (app.globalData.seller) {
       this.setData({
-        wxToIndex: id//货架id
+        seller: app.globalData.seller
       })
+    } else {
+      // 会在 Page.onLoad 之后才返回
+      // 所以此处加入 callback 以防止这种情况
+      app.sellerInfoReadyCallback = res => {
+        this.setData({
+          seller: res.data
+        })
+      }
     }
   },
-  onShow: function () {
-    //不放在onload，防止未登录就调用扫货架接口
-    if(this.data.wxToIndex){
-      this.scanQrCode()
-    }
-    //通过本地缓存获取商家ID，商家NAME
-    let seller = wx.getStorageSync('seller')
-    if (seller !== '') {
-      this.setData({
-        seller: {
-          id: seller.id,
-          name: seller.name
-        }
-      })
-    }
+  onUnload: function () {
+    event.remove('indexSellerChanged', this)
   },
-  //扫描二维码
+  //微信扫一扫直接进入小程序
+  wxScanToIndex: function (url) {
+    let options = {
+      url,
+      childFn: () => {
+        wx.switchTab({
+          url: '/pages/shopcart/shopcart',
+        })
+      }
+    }
+    app.handleScanQrCode(options)
+  },
+  //扫描货架二维码或者商品条形码
   scanCode: function () {
-    let self = this
-    let wxToIndex = this.data.wxToIndex
+    let content = app.globalData.seller 
+    ? '请扫描货架二维码或者商品条形码' 
+    : '请扫描货架二维码'
     wx.scanCode({
       success: function (res) {
-        let scanType = res.scanType
-        if (scanType === 'QR_CODE') {
-          let options = {
-            url: res.result
-          }
-          options.fn = function (e) {
-            let data = e.data.data
-            //商家信息存入本地缓存
-            //下次启动小程序不用重新扫描相同货架的二维码
-            wx.setStorageSync('seller', {
-              id: data.id,
-              name: data.name
-            })
-            //商家不一致清空购物车
-            if (data.id !== self.data.seller.id) {
-              app.globalData.cartList = [] //删除购物车缓存
-              wx.switchTab({
-                url: '../shopcart/shopcart',
-                success: e => {
-                  let nextPage = getCurrentPages().pop() //获取要跳转页面信息
-                  //更换购物车信息
-                  nextPage.setData({
-                    seller: {
-                      id: data.id,
-                      name: data.name
-                    },
-                    cartList: [],//清空购物车
-                  })
-                }
-              })
-            } else {
-              //扫货架码成功跳转购物车
-              wx.switchTab({
-                url: '../shopcart/shopcart'
-              })
-            }
-            //设置商家信息
-            self.setData({
-              seller: {
-                id: data.id,
-                name: data.name
-              }
+        let options = {
+          childFn: () => {
+            wx.switchTab({
+              url: '/pages/shopcart/shopcart',
             })
           }
-          //微信扫一扫直接进入小程序
-          if (wxToIndex) {
-            options.uData = {
-              id: wxToIndex //货架ID
-            }
-            //发送请求
-            app.handleRequestVali(options)
-            //清除货架ID，默认小程序内扫码
-            self.setData({
-              wxToIndex: null
-            })
-          } else {
-            //小程序内扫码
-            //调用handleScan函数
-            app.handleScanQrCode(options)
-          }
-        } else if (scanType === 'EAN_13' || scanType === 'EAN_8') {
-            //扫描条形码
-            let self = this
-            let options = {
-              barcode: res.result * 1
-            }
-            options.fn = function (res) {
-              wx.switchTab({
-                url: '../shopcart/shopcart',
-                success: e => {
-                  let nextPage = getCurrentPages().pop() //获取要跳转页面信息
-                  let self = nextPage
-                  //扫描成功配置商品信息
-                  let data = res.data.data
-                  let newGoods = {
-                    id: data.id,
-                    barcode: data.barcode,
-                    name: data.name,
-                    price: data.price,
-                    num: 1
-                  }
-                  //获取购物车列表
-                  let cartList = self.data.cartList
-                  //是否有相同商品
-                  let hasGoods = false
-                  //购物车无商品直接把扫描商品添加进购物车
-                  if (cartList.length === 0) {
-                    cartList.push(newGoods)
-                  } else {
-                    //循环购物车列表
-                    cartList.map((item) => {
-                      if (newGoods.id === item.id) {
-                        //购物车有相同商品数量自增1
-                        item.num += 1
-                        hasGoods = true
-                      }
-                    })
-                    //购物车无相同商品，把新商品加入购物车
-                    if (!hasGoods) {
-                      cartList.unshift(newGoods)
-                    }
-                  }
-                  //购物车更新
-                  self.setData({
-                    cartList
-                  })
-                  //重新计算合计价格
-                  self.getTotalPrice()
-                }
-              })
-            }
-            //调用handleScan函数
+        }
+        switch (res.scanType) {
+          case 'QR_CODE':
+              options.url = res.result
+              app.handleScanQrCode(options)
+          break
+          case 'EAN_13':
+            options.barcode = res.result * 1
             app.handleScanBarCode(options)
-        } else {
-          wx.showModal({
-            content: '请扫描正确的货架码或者条形码',
-            showCancel: false
-          })
+          break
+          case 'EAN_8':
+            options.barcode = res.result * 1
+            app.handleScanBarCode(options)
+          break
+          default:
+            wx.showModal({
+              content,
+              showCancel: false
+            })
         }
       },
-      fail: function (res) {
+      fail: () => {
         wx.showModal({
-          content: '请扫描正确的货架码或者条形码',
+          content,
           showCancel: false
         })
       }
     })
-    
   }
 })

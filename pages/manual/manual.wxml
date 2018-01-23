@@ -1,6 +1,8 @@
 <!--pages/manual/manual.wxml-->
 <view class='content'>
   <image mode='widthFix' class='manual-bg' src='../../assets/img/manual_bg.png'></image>
-  <input class='manual-ipt theme-border' type='number' name='code' placeholder='请输入条码' placeholder-class='manual-placeholder' bindinput='setCode' value='{{code}}' maxlength='13' cursor-spacing='87'></input>
-  <button class='manual-btn theme-bg' bindtap='manualCode'>确定</button>
+  <form bindsubmit='manualCode'>
+    <input class='manual-ipt theme-border' type='number' name='code' placeholder='请输入条码' placeholder-class='manual-placeholder' maxlength='13' cursor-spacing='87'></input>
+    <button class='manual-btn theme-bg' form-type='submit'>确定</button>
+  </form>
 </view>

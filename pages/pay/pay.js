@@ -1,6 +1,7 @@
 // pages/pay/pay.js
 const addOrderServer = require('../../config').addOrderServer,
-  payServer = require('../../config').payServer
+  payServer = require('../../config').payServer,
+  event = require('../../utils/event')
 var app = getApp()
 Page({
   data: {
@@ -41,13 +42,13 @@ Page({
     let options = {
       server: addOrderServer,//服务器地址
       uData: {
-        sid: wx.getStorageSync('seller').id,//货架ID
+        sid: app.globalData.seller.id,//货架ID
         goods: self.data.cartList//商品列表
       }
     }
     options.fn = res => {
       let self = this
-      
+
       //生成订单成功
       let oid = res.data.data
       if (oid) {
@@ -76,18 +77,15 @@ Page({
   //微信支付
   wxPay: function (obj) {
     let self = this
-    obj.success = res=>{
+    obj.success = res => {
       //支付成功
       //条状订单详情页
       let oid = self.data.oid
       wx.redirectTo({
         url: `../orderdetail/orderdetail?oid=${oid}`,
-        success: ()=>{
-          let prevPage = getCurrentPages().shift() //获取购物车页面
-          app.globalData.cartList //删除购物车本地数据
-          prevPage.setData({ //清空购物车列表
-            cartList:[]
-          })
+        success: () => {
+          app.globalData.cartList = [] //删除购物车本地数据
+          event.emit('cartListChanged', [])
         }
       })
     }
@@ -98,7 +96,7 @@ Page({
         showCancel: false
       })
     }
-    //回复按钮点击
+    //恢复按钮点击
     obj.complete = res => {
       self.setData({
         disabled: false

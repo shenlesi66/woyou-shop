@@ -31,7 +31,7 @@
   </view>
   <view class='nogoods-wrapper' wx:else>
     <view class='nogoods-bg-wrapper'>
-      <image class='nogoods-bg-img' src='../../assets/img/nogoods_bg.png'></image>
+      <image class='nogoods-bg-img' src='../../assets/img/no_bg.png'></image>
       <text class='nogoods-bg-text'>小主，您的订单列表是空的哦~</text>
     </view>
   </view>

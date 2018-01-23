@@ -1,8 +1,8 @@
 // pages/feedback/feedback.js
-const feedbackServer = require('../../config').feedback
+const feedbackServer = require('../../config').feedback,
+      valiDate = require('../../utils/valiDate.js').valiDate
 const app = getApp()
 Page({
-
   /**
    * 页面的初始数据
    */
@@ -23,60 +23,38 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    this.valiDate._vali()
-    console.log(this)
   },
+  //valiDate规则
   vRule: {
-    phone: [
-      'required',
-      'tel'
-    ],
-    name: [
-      'required',
-      'tel'
-    ]
-  },
-  valiDate: {
-    _init: function (vRule, Vval) {
-      let rule = vRule
-      let val = Vval.detail.value
-      for (let i in rule) {
+    rule: {
+      phone: [
+        'required',
+        'tel'
+      ],
+      name: [
+        'required'
+      ],
+      content: [
+        'required'
+      ]
+    },
+    msg: {
+      phone: {
+        required: '手机号码不能为空'
+      },
+      name: {
+        required: '公司名称不能为空'
+      },
+      content: {
+        required: '反馈内容不能为空'
       }
-    },
-    _validators: {
-      required: {
-        rule: /.+/,
-        msg: '必填项不能为空'
-      },
-      tel: {
-        rule: /^[\d]{11}$/,
-        msg: '手机号格式不正确'
-      },
-    },
-    _vali: function () {
-      let val = ''
-      let ruleList = ['required', 'tel']
-      ruleList.forEach(item => {
-        let validator = this._validators[item],
-          rule = validator.rule,
-          msg = validator.msg
-        let result = rule.test(val) ? '' : msg
-
-        if (result) {
-          wx.showModal({
-            content: result,
-          })
-        }
-      })
     }
   },
-
   //反馈
   handleSubmit: function (e) {
-    // this.valiDate(this.vRule,e)
-    return
-    let val = e.detail.value
-    if (this.validate(val)) {
+    //验证
+    let res = valiDate(e, this.vRule)
+    if (res!==false) {
       let options = {
         //内容
         uData: e.detail.value,
@@ -87,16 +65,17 @@ Page({
         if (e.data.msg === '成功') {
           wx.switchTab({
             url: '../my/my',
+            success: function () {
+              wx.showToast({
+                title: '反馈成功',
+                duration: 2000,
+              })
+            }
           })
-          wx.showToast({
-            title: '反馈成功',
-            duration: 2000,
-          })
+          
         }
       }
       app.handleRequestVali(options)
-    } else {
-      console.log(e)
     }
   }
 })

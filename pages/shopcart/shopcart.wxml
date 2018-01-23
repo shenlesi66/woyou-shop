@@ -2,7 +2,7 @@
 <view class='content'>
   <view class='code-wrapper'>
     <view class='qr-wrapper'>
-      <text class='iconfont icon-erweima'></text>  
+      <text class='iconfont icon-dianpu'></text>  
       <text class='qr-text'>{{seller.name?seller.name:'请扫描二维码选择货架'}}</text> 
     </view>
     <view class='manual-wrapper' bindtap='navigateToPage' data-url='../manual/manual'>
@@ -39,8 +39,10 @@
   </view>
   <view class='nogoods-wrapper' wx:else>
     <view class='nogoods-bg-wrapper'>
-      <image class='nogoods-bg-img' src='../../assets/img/nogoods_bg.png'></image>
-      <text class='nogoods-bg-text'>小主，快来，我想吃好吃的了～~</text>
+      <!-- fictitious-keyborad-block修复手机虚导航导致界面位移 -->
+      <view class='fictitious-keyborad-block'></view>
+      <image class='nogoods-bg-img' src='../../assets/img/cart_bg.png'></image>
+      <!-- <text class='nogoods-bg-text'>小主，快来，我想吃好吃的了～~</text> -->
       <button class='nogoods-bg-btn theme-bg' bindtap='scanBarCode'>请快扫描商品条码吧</button>
     </view>
   </view>
