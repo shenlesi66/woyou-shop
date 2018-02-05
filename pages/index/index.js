@@ -11,8 +11,9 @@ Page({
       })
     })
     //判断是否微信扫码进入
-    if (options.q) {
-      let url = decodeURIComponent(options.q) //获取货架连接
+    if (!options.q) {
+      // let url = decodeURIComponent(options.q) //获取货架连接
+      let url = 'www.st.com/1'
       this.wxScanToIndex(url)
     }
     //获取商家ID，商家NAME

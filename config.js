@@ -30,7 +30,13 @@ var config = {
   payServer: `${host}/pay/index`,
 
   //反馈
-  feedback: `${host}/faq/feedback`
+  feedback: `${host}/faq/feedback`,
+
+  //绑定手机号码
+  bindPhone: `${host}/user/bind`,
+
+  //检测绑定手机号码
+  checkPhone: `${host}/user/check_bind`,
 };
 
 module.exports = config

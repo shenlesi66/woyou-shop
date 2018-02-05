@@ -25,7 +25,8 @@ App({
     isNavigating: false,   
     failCount: 0,
     cartList: [],
-    token: ''
+    token: '',
+    failMsg: ''
   },
   // 登录
   handleLogin: function (options) {
@@ -54,7 +55,6 @@ App({
               this.globalData.token = token //token写入data
               //token不一致重新调用后台接口
               if (options) {
-                console.log('token不一致，重新登录')
                 this.handleRequestVali(options, true)
               }
             },
@@ -75,9 +75,9 @@ App({
   //type=true调用函数handleRequest，false重新登录
   handleRequestVali: function (options, type=true) {
     //防止重连次数过多
-    if (this.globalData.failCount>=3){
+    if (this.globalData.failCount>=2){
       wx.showModal({
-        content: '网络错误，请稍后重试',
+        content: this.globalData.failMsg,
         showCancel: false,
         success:()=>{
           this.globalData.failCount = 0
@@ -94,6 +94,9 @@ App({
   },
   //请求接口
   handleRequest: function (options) {
+    if (!options.uData) {
+      options.uData = {}
+    }
     //传递当前时间戳
     let time = Math.floor(new Date().getTime() / 1000)
     options.uData.timestamp = time
@@ -124,6 +127,7 @@ App({
         if (code === 401) {
           this.handleRequestVali (options, false) //验证函数
           this.globalData.failCount += 1 //重连次数+1
+          this.globalData.failMsg =res.data.msg //服务器返回错误信息
         //服务器返回其他错误提示
         } else if (code !== 200) {
           wx.showModal({
@@ -188,7 +192,22 @@ App({
       }
       options.server = getGoodsServer
       options.fn = r => {
-        self.handleCarts(r)
+        let res = r.data.data,
+          barcode = res.barcode,
+          cartList = appData.cartList
+        //扫码检测商品数量是否达到上限
+        for (let i = 0;i<cartList.length;i++) {
+          if (barcode === cartList[i].barcode) {
+            if (cartList[i].num === cartList[i].max) {
+              wx.showModal({
+                content: '最多只能买' + cartList[i].max + '件哦！',
+                showCancel: false
+              })
+              return
+            }
+          }
+        }
+        self.handleCarts(res)
         if (options.childFn) {
           options.childFn()
         }
@@ -253,13 +272,15 @@ App({
   },
   handleCarts: function (res) {
     //扫描成功配置商品信息
-    let data = res.data.data
+    let data = res,
+        max = res.num < 99 ? data.num : 99
     let newGoods = {
       id: data.id,
       barcode: data.barcode,
       name: data.name,
       price: data.price,
-      num: 1
+      num: 1,
+      max
     }
     //获取购物车列表
     let cartList = this.globalData.cartList

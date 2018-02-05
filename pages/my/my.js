@@ -1,3 +1,6 @@
+const bindPhone = require('../../config.js').bindPhone,
+      checkPhone = require('../../config.js').checkPhone,
+      event = require('../../utils/event.js')
 var app = getApp();
 // pages/my/my.js
 Page({
@@ -7,24 +10,35 @@ Page({
   data: {
     options:[
       {
+        id: 1,
         text:'我的订单',
-        icon:'icon-dingdan',
+        icon:'icon-tubiaolunkuo-',
         url:'../orders/orders'
       },
       {
+        id: 2,
         text:'意见反馈',
-        icon: 'icon-yijianfankui1',
+        icon: 'icon-xiaoxi',
         url: '../feedback/feedback'
       }
     ],
     userInfo: {
       nickName: '您的昵称'
     },
+    phoneType: false,
     hasUserInfo: false,
     canIUse: wx.canIUse('button.open-type.getUserInfo')
   },
   //事件处理函数
   onLoad: function () {
+    //更改手机绑定状态
+    event.on('changePhoneType', this, function (data) {
+      this.setData({
+        phoneType: data
+      })
+    })
+    //检测是否已经绑定手机
+    this.handleCheckPhone()
     //获取用户信息
     app.handleUserInfo()
     if (app.globalData.userInfo) {
@@ -54,6 +68,9 @@ Page({
       })
     }
   },
+  onUnload: function () {
+    event.remove('changePhoneType',this)
+  },
   getUserInfo: function (e) {
     //允许授权之后获取用户信息(拒绝授权没有)
     if(e.detail.userInfo){
@@ -67,5 +84,35 @@ Page({
   //点击跳转页面
   navigateToPage: function (e) {
     app.handleForward(e)
+  },
+  //获取用户手机号码
+  getPhoneNumber: function (e) {
+    if (e.detail.errMsg !== 'getPhoneNumber:fail user deny') {
+      let options = {
+        uData: {
+          iv: e.detail.iv,
+          encryptedData: e.detail.encryptedData
+        },
+        server: bindPhone,
+        fn: function (res) {
+          event.emit('changePhoneType', true)
+          wx.showModal({
+            content: '绑定成功',
+            showCancel: false
+          })
+        }
+      }
+      app.handleRequestVali(options, false)
+    }  
+  },
+  //检查是否绑定手机
+  handleCheckPhone: function () {
+    let options = {
+      server: checkPhone,
+      fn: function (res) {
+        event.emit('changePhoneType', true)
+      }
+    }
+    app.handleRequestVali(options)
   }
 })

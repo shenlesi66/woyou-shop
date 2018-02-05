@@ -26,6 +26,7 @@
   background-color: #f3f3f3;
 }
 .userinfo-nickname {
+  margin: 0 30rpx;
   color: #aaa;
   font-size: 34rpx;
 }
@@ -46,12 +47,39 @@
   margin-left: 41rpx;
   font-size: 28rpx;
 }
-.icon-dingdan,.icon-yijianfankui1{
-  font-size: 55rpx;
+.icon-tubiaolunkuo-,.icon-xiaoxi{
+  font-size: 50rpx;
 }
-.icon-yijianfankui1{
-  margin-top: -10rpx;
+.icon-xiaoxi{
+  color: #444;
 }
 .navigator-hover{
   background-color: 1rpx solid #f7f7f7;
+}
+.userinfo-wrapper{
+  display: flex;
+  align-items: center;
+}
+.bindPhone-wrapper{
+  position: relative;
+  width: 50rpx;
+  height: 50rpx;
+}
+.bindPhone-icon{
+  width: 100%;
+  height: 100%;
+}
+.btn-getNumber{
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  outline: none;
+  margin: 0;
+  padding: 0;
+}
+.btn-getNumber::after {
+  border: none;
 }

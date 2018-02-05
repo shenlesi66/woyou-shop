@@ -1,18 +1,25 @@
 <!--pages/my/my.wxml-->
 <view class='content'>
   <view class="userinfo">
-    <block wx:if="{{hasUserInfo && canIUse}}" >
-       <image class="userinfo-avatar" src="{{userInfo.avatarUrl}}" background-size="cover"></image> 
+    <image wx:if="{{hasUserInfo}}" class="userinfo-avatar" src="{{userInfo.avatarUrl}}" background-size="cover"></image> 
+    <view class='userinfo-avatar no-userinfo-avatar' wx:else ></view>
+      <view class="userinfo-wrapper">
+      <view class="bindPhone-wrapper"></view>
       <text class="userinfo-nickname">{{userInfo.nickName}}</text>
-    </block>
-    <block wx:else>
-      <view class='userinfo-avatar no-userinfo-avatar'></view>
-      <text class="userinfo-nickname">{{userInfo.nickName}}</text>      
-      <button class='get-userinfo theme-color' open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 获取头像昵称 </button>
-    </block>
+      <view class="bindPhone-wrapper">
+        <block wx:if="{{phoneType}}">
+          <image class='bindPhone-icon' src='../../assets/img/bindPhone-icon.png'></image>
+        </block>
+        <block wx:else>
+          <image class='bindPhone-icon' src='../../assets/img/unbindPhone-icon.png'></image>
+          <button open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber" class="btn-getNumber"></button> 
+        </block>
+      </view>
+      </view>
+      <button wx:if="{{!hasUserInfo && canIUse}}" class='get-userinfo theme-color' open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 获取头像昵称 </button>
   </view>
   <view class='options-wrapper'>
-    <block wx:for='{{options}}'>
+    <block wx:for='{{options}}' wx:key='{{item.id}}'>
       <view class='options-item-wrapper' data-url='{{item.url}}' bindtap='navigateToPage'>
         <text class="iconfont {{item.icon}}"></text>
         <text class="options-item-text">{{item.text}}</text>

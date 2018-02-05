@@ -1,14 +1,14 @@
 // pages/shopcart/shopcart.js
 const getCodeServer = require('../../config').getCodeServer,
-      getGoodsServer = require('../../config').getGoodsServer,
-      event = require('../../utils/event')
+  getGoodsServer = require('../../config').getGoodsServer,
+  event = require('../../utils/event')
 var app = getApp()
 Page({
   /**
    * 页面的初始数据
    */
   data: {
-    seller:null,
+    seller: null,
     cartList: [],
     totalPrice: 0
   },
@@ -58,10 +58,11 @@ Page({
   addNum: function (e) {
     //获取购物车位置
     const idx = e.currentTarget.dataset.index
-    let cartList = this.data.cartList
-    if (cartList[idx].num < 99) {//数量不能超过99
+    let cartList = this.data.cartList,
+      goods = cartList[idx]
+    if (goods.num < goods.max) {
       //数量加1
-      cartList[idx].num += 1
+      goods.num += 1
       this.setData({
         cartList
       })
@@ -69,7 +70,7 @@ Page({
       this.getTotalPrice()
     } else {
       wx.showModal({
-        content: '最多只能买99件哦！',
+        content: '最多只能买' + goods.max + '件哦！',
         showCancel: false
       })
     }
@@ -118,14 +119,14 @@ Page({
     const idx = e.currentTarget.dataset.index
     let cartList = this.data.cartList
     let num = parseInt(e.detail.value)//获取用户输入的数量
-    if (!num){//输入的数量为空或者不是数字
+    if (!num) {//输入的数量为空或者不是数字
       wx.showModal({
         content: '请输入一个有效的数量！',
         showCancel: false
       })
-    } else if (num > 99) {//数量大于99
+    } else if (num > cartList[idx].max) {//数量大于99
       wx.showModal({
-        content: '最多只能买99件哦！',
+        content: '最多只能买' + cartList[idx].max+'件哦！',
         showCancel: false
       })
     } else {//正常数量
@@ -137,7 +138,7 @@ Page({
     })
     app.globalData.cartList = cartList
     //重新获取价格
-    this.getTotalPrice()      
+    this.getTotalPrice()
   },
   //获取购物车总价、商品种类数量
   getTotalPrice: function (e) {
@@ -163,15 +164,15 @@ Page({
     })
   },
   //扫描二维码
-  scanQrCode(){
+  scanQrCode() {
     wx.scanCode({
-      success: res=>{
-        if (res.scanType==='QR_CODE') {
+      success: res => {
+        if (res.scanType === 'QR_CODE') {
           let self = this
           let options = {
             url: res.result,
             hideLoadding: true,
-            childFn: ()=> {
+            childFn: () => {
               wx.showToast({
                 title: '成功',
                 icon: 'success',
@@ -179,7 +180,7 @@ Page({
               })
             }
           }
-          app.handleScanQrCode(options)    
+          app.handleScanQrCode(options)
         } else {
           wx.showModal({
             content: '请扫描正确的货架二维码',
@@ -191,11 +192,11 @@ Page({
   },
   //扫描商品条码
   scanBarCode: function () {
-    if (!app.globalData.seller){
+    if (!app.globalData.seller) {
       wx.showModal({
         content: '请先扫描货架二维码',
-        success:res=>{
-          if(res.confirm){
+        success: res => {
+          if (res.confirm) {
             //扫描二维码
             this.scanQrCode()
           }
@@ -215,7 +216,7 @@ Page({
           let options = {
             barcode: res.result * 1
           }
-          app.handleScanBarCode(options)   
+          app.handleScanBarCode(options)
         }
       })
     }
