@@ -7,7 +7,8 @@
     "pages/orders/orders",
     "pages/orderdetail/orderdetail",
     "pages/manual/manual",
-    "pages/pay/pay"
+    "pages/pay/pay",
+    "pages/coupon/coupon"
   ],
   "window": {
     "backgroundTextStyle": "light",

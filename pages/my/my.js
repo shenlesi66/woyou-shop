@@ -8,6 +8,7 @@ Page({
    * 页面的初始数据
    */
   data: {
+    couponNum: 10,
     options:[
       {
         id: 1,
@@ -17,6 +18,12 @@ Page({
       },
       {
         id: 2,
+        text: '优惠券',
+        icon: 'icon-youhuiquan',
+        url: '../coupon/coupon'
+      },
+      {
+        id: 3,
         text:'意见反馈',
         icon: 'icon-xiaoxi',
         url: '../feedback/feedback'

@@ -1,4 +1,5 @@
 /* pages/pay/pay.wxss */
+@import '../../assets/font/iconfont.wxss';
 .goods-wrapper{
   margin-bottom: 25rpx;  
 }
@@ -29,7 +30,7 @@
 }
 .price-detail-wrapper{
   padding: 44rpx 26rpx;  
-  font-size: 25rpx;
+  font-size: 27rpx;
 }
 .price-detail-item-wrapper{
   display: flex;
@@ -86,5 +87,12 @@ button[disabled][type="default"], wx-button[disabled]:not([type]) {
 }
 .price-total-wrapper{
   background-color: #fff;
-  margin-bottom: 10rpx;
+  margin-bottom: 25rpx;
+}
+.icon-you {
+  padding-left: 5rpx;
+  font-weight: 700;
+}
+.no-coupon-text{
+  color: #999;
 }

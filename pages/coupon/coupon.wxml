@@ -1,0 +1,31 @@
+<!--pages/coupon/coupon.wxml-->
+<view class='content'>
+  <!-- <view class='cancel-wrapper'>
+    <button class='theme-bg cancel'>不使用优惠券</button>
+  </view> -->
+  <view class='coupon-wrapper' wx:if='{{couponList.length}}'>
+    <block wx:for='{{couponList}}' wx:key='item.id'>
+      <view class='item-wrapper' data-num='{{item.num2}}' data-id='{{item.id}}' bindtap='chooseCoupon'>
+        <view class="left-wrapper theme-bg">
+          <text>¥</text>
+          <text>{{item.num2}}</text>
+        </view>
+        <view class="right-wrapper theme-color">
+          <view class='right-text-wrapper'>
+            <text>{{item.name}}</text>
+            <text>有效期：{{item.start_time}} 至 {{item.end_time}}</text>
+            <text>满{{item.num1}}元可用</text>
+          </view>
+        </view>
+        <view class='radius radius-top'></view>
+        <view class='radius radius-bottom'></view>
+      </view>
+    </block>
+  </view>
+  <view class='null-wrapper' wx:else>
+    <view class='null-bg-wrapper'>
+      <image class='null-bg-img' src='../../assets/img/no_bg.png'></image>
+      <text class='null-bg-text'>小主，您还没有优惠券哦~</text>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,75 @@
+/* pages/coupon/coupon.wxss */
+page,.content{
+  height: 100%;
+}
+.coupon-wrapper{
+  padding: 54rpx 35rpx 0 35rpx;
+}
+.cancel-wrapper {
+  margin-bottom: 30rpx;
+  width: 100%;
+}
+.cancel{
+  color: #fff;
+}
+.item-wrapper{
+  display: flex;
+  position: relative;
+  margin-bottom: 14rpx;
+  height: 168rpx;
+}
+.left-wrapper {
+  flex-shrink: 0;
+  width: 200rpx;
+  height: 100%;
+  color: #fff;
+  text-align: center;
+  line-height: 168rpx;
+  border-radius: 25rpx;
+}
+.left-wrapper > text:first-child{
+  font-size: 58rpx;
+}
+.left-wrapper > text:last-child{
+  font-size: 70rpx;
+}
+.right-wrapper {
+  display: flex;
+  align-items: center;
+  flex-direction: column; 
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  background-color: #fff;
+  border-radius: 25rpx;
+}
+.right-text-wrapper > text {
+  display: block;
+}
+.right-text-wrapper > text:first-child{
+  margin-bottom: 15rpx;
+  font-size: 33rpx;
+  font-weight: 700;
+}
+.right-text-wrapper > text:nth-child(2){
+  margin-bottom: 5rpx;
+  font-size: 22rpx;
+}
+.right-text-wrapper > text:last-child{
+  margin-bottom: 5rpx;
+  font-size: 25rpx;
+}
+.radius {
+  position: absolute;
+  left: 180rpx;
+  width: 40rpx;
+  height: 40rpx;
+  background-color: #f7f7f7;
+  border-radius: 50%;
+}
+.radius-top{
+  top: -20rpx;
+}
+.radius-bottom{
+  bottom: -20rpx;
+}

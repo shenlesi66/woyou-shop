@@ -20,3 +20,23 @@ page{
   justify-content: space-between;
   box-sizing: border-box;
 }
+.null-wrapper{
+  height: 100%;
+}
+.null-bg-wrapper{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+.null-bg-img{
+  width: 188rpx;
+  height: 308rpx;
+}
+.null-bg-text{
+  margin-top: 35rpx;
+  color: #424242;
+  font-size: 28rpx;
+}

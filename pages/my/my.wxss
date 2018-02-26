@@ -35,8 +35,8 @@
 }
 .options-item-wrapper{
   display: flex;
-  align-items: center;
-  padding-left: 47rpx;
+  justify-content: space-between;
+  padding: 0 47rpx;
   width: 100%;
   height: 107rpx;
   border-bottom: 1rpx solid #f7f7f7;
@@ -47,10 +47,20 @@
   margin-left: 41rpx;
   font-size: 28rpx;
 }
-.icon-tubiaolunkuo-,.icon-xiaoxi{
-  font-size: 50rpx;
+.left-wrapper{
+  display: flex;
+  align-items: center;
 }
-.icon-xiaoxi{
+.right-wrapper{
+  display: flex;
+  align-items: center;
+  align-self: center;
+}
+.right-text{
+  font-size: 28rpx;
+}
+.icon-tubiaolunkuo-,.icon-xiaoxi,.icon-youhuiquan{
+  font-size: 50rpx;
   color: #444;
 }
 .navigator-hover{

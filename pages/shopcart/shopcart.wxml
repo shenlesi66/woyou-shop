@@ -25,7 +25,7 @@
     </scroll-view>
     <view class='cartcontrol-wrapper'>
       <view class='cartcontrol-top-wrapper'>合计：
-          <text class='theme-color'>￥{{totalPrice}}</text>
+          <text class='theme-color'>¥{{totalPrice}}</text>
       </view>  
       <view class='cartcontrol-btm-wrapper'>
         <view class='cartcontrol-btm-left'>

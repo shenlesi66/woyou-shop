@@ -21,8 +21,14 @@
   <view class='options-wrapper'>
     <block wx:for='{{options}}' wx:key='{{item.id}}'>
       <view class='options-item-wrapper' data-url='{{item.url}}' bindtap='navigateToPage'>
-        <text class="iconfont {{item.icon}}"></text>
-        <text class="options-item-text">{{item.text}}</text>
+        <view class='left-wrapper'>
+          <text class="iconfont {{item.icon}}"></text>
+          <text class="options-item-text">{{item.text}}</text>
+        </view>
+        <view class="right-wrapper theme-color">
+          <text wx:if="{{couponNum > 0 && item.text==='优惠券'}}" class="right-text">3张</text>
+          <text class='iconfont icon-you'></text>
+        </view>
       </view>
     </block>
   </view>

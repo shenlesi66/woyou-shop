@@ -37,6 +37,15 @@ var config = {
 
   //检测绑定手机号码
   checkPhone: `${host}/user/check_bind`,
+
+  //优惠券列表
+  getCouponList: `${host}/coupon/list`,
+
+  //自动使用适用优惠券
+  getBestCoupon: `${host}/coupon/one`,
+
+  //获取能使用的优惠券
+  getAllCoupon: `${host}/coupon/all`
 };
 
 module.exports = config

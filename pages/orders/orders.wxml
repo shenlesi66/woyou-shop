@@ -11,8 +11,8 @@
             <text class='order-info-goods'>{{item.name}}</text>
           </block>
           <text class='order-info-item'>共{{item.goodsCount}}件商品</text>
-          <!-- <text class='order-info-item'>合计：￥{{item.price}}</text> -->
-          <!-- <text class='order-info-item'>优惠：￥{{item.discount}}</text> -->
+          <!-- <text class='order-info-item'>合计：¥{{item.price}}</text> -->
+          <!-- <text class='order-info-item'>优惠：¥{{item.discount}}</text> -->
         </view>
         <view class='order-info-right-wrapper'>
           <view class='order-info-paytype-wrapper'>
@@ -24,15 +24,15 @@
         </view>   
       </view>
       <view class='order-btm-wrapper'>
-        <text class='order-btm-payprice theme-color'>实付：￥{{item.total}}</text>
+        <text class='order-btm-payprice theme-color'>实付：¥{{item.total}}</text>
         <button class='order-btm-detailbtn theme-bg' data-url='../orderdetail/orderdetail?oid={{item.oid}}' bindtap='navigateToPage'>订单详情</button>
       </view>  
     </view>
   </view>
-  <view class='nogoods-wrapper' wx:else>
-    <view class='nogoods-bg-wrapper'>
-      <image class='nogoods-bg-img' src='../../assets/img/no_bg.png'></image>
-      <text class='nogoods-bg-text'>小主，您的订单列表是空的哦~</text>
+  <view class='null-wrapper' wx:else>
+    <view class='null-bg-wrapper'>
+      <image class='null-bg-img' src='../../assets/img/no_bg.png'></image>
+      <text class='null-bg-text'>小主，您的订单列表是空的哦~</text>
     </view>
   </view>
 </view>

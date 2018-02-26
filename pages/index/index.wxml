@@ -30,7 +30,7 @@
           <view class="scroll-view-item-H">
             <image class="newfoods-item-img" src='{{item.imgUrl}}'></image>
             <text class='newfoods-item-name'>{{item.name}}</text>
-            <text class='newfoods-item-price'>￥{{item.price}}</text>
+            <text class='newfoods-item-price'>¥{{item.price}}</text>
           </view>
         </block>
       </scroll-view>
