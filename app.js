@@ -94,7 +94,6 @@ App({
   },
   //请求接口
   handleRequest: function (options) {
-    console.log(options)
     if (!options.uData) {
       options.uData = {}
     }

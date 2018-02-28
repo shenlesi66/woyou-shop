@@ -19,11 +19,11 @@
     </view>
   </view>
     <view class='price-wrapper'>
-    <view class='price-detail-wrapper' bindtap='navigateToPage' data-url='../coupon/coupon?price={{totalPrice}}'>
+    <view class='price-detail-wrapper' bindtap='navigateToPage' data-url='../coupon/coupon?price={{totalPrice}}&oupon={{bestCoupon.num}}'>
        <view class='price-detail-item-wrapper'>
         <text class='price-key'>优惠券</text>
-        <text class='price-val theme-color' wx:if='{{bestCoupon}}'>-¥{{bestCoupon}}</text>
-        <text class='price-val no-coupon-text'>暂无可用优惠券</text>
+        <text class='price-val theme-color' wx:if='{{bestCoupon.id}}'>-¥{{bestCoupon.num}}</text>
+        <text wx:else class='price-val no-coupon-text'>{{coupon.tips}}</text>
         <text class='iconfont icon-you'></text>
       </view> 
       <!-- <view class='price-detail-item-wrapper'>
@@ -38,7 +38,7 @@
   <view class='pay-wrapper'>
     <view class='pay-left-wrapper'>
       <text>实际支付：</text>
-      <text class='pay-left-price theme-color'>¥{{totalPrice-bestCoupon}}</text>
+      <text class='pay-left-price theme-color'>¥{{bestCoupon.num?payPrice:totalPrice}}</text>
     </view>
     <view class='pay-right-wrapper' bindtap='addOrder'>
       <button class='pay-btn  theme-bg' disabled='{{disabled}}'>确认支付</button>

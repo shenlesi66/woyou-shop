@@ -1,9 +1,9 @@
 <!--pages/coupon/coupon.wxml-->
 <view class='content'>
-  <!-- <view class='cancel-wrapper'>
-    <button class='theme-bg cancel'>不使用优惠券</button>
-  </view> -->
   <view class='coupon-wrapper' wx:if='{{couponList.length}}'>
+    <view class='cancel-wrapper' wx:if='{{nouseCouponType}}'>
+      <button class='theme-bg cancel' bindtap='nouseCoupon'>不使用优惠券</button>
+    </view> 
     <block wx:for='{{couponList}}' wx:key='item.id'>
       <view class='item-wrapper' data-num='{{item.num2}}' data-id='{{item.id}}' bindtap='chooseCoupon'>
         <view class="left-wrapper theme-bg">

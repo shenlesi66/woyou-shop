@@ -7,14 +7,31 @@ var app = getApp()
 Page({
   data: {
     disabled: false,
-    bestCoupon: 0,
+    bestCoupon: {
+      num: 0,
+      id: null
+    },
+    coupon: {
+      tips: '' //优惠券提示
+    },
+    totalPrice: 0, //商品总额
+    payPrice: 0, //实际支付金额
   },
   onLoad: function () {
+    //页面通信
     event.on('setCoupon', this, function (data) {
       this.setData({
-        bestCoupon: data
+        bestCoupon: data,
+        payPrice: (this.data.totalPrice - data.num).toFixed(2)
       })
     })
+  },
+  onUnload: function () {
+    event.remove('setCoupon', this)
+  },
+  onReady: function () {
+    //获取总金额之后才能调用最优优惠券接口，所以放在onReady
+    this.getBestCoupon()
   },
   onShow: function (e) {
     //获取缓存购物车数据
@@ -27,13 +44,12 @@ Page({
           max: 5,
           name: "不二家双棒巧克力24g",
           num: 1,
-          price: "2.11"
+          price: "5.11"
         }
       ]
       // cartList
     })
     this.getTotalPrice()
-    this.getBestCoupon()
   },
   //获取购物车总价、商品种类数量
   getTotalPrice: function (e) {
@@ -46,8 +62,8 @@ Page({
       let num = item.num
       totalPrice += price * num
     })
-    //截取两位小数
-    totalPrice = totalPrice.toFixed(2)
+    //截取两位小数  *1转换为number
+    totalPrice = totalPrice.toFixed(2) * 1
     //减去优惠券后的总金额
     this.setData({
       totalPrice
@@ -69,7 +85,6 @@ Page({
     }
     options.fn = res => {
       let self = this
-
       //生成订单成功
       let oid = res.data.data
       if (oid) {
@@ -137,9 +152,19 @@ Page({
       },
       fn: function (res) {
         if (res.data.data) {
-          let bestCoupon = res.data.data.num2
+          let bestCoupon = res.data.data
           self.setData({
-            // bestCoupon
+            bestCoupon:{
+              num: bestCoupon.num2,
+              id: bestCoupon.id
+            },
+            payPrice: (self.data.totalPrice - bestCoupon.num2).toFixed(2)
+          })
+        } else {
+          self.setData({
+            coupon: {
+              tips: '暂无可用优惠券'
+            }
           })
         }
       }
