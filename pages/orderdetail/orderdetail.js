@@ -21,6 +21,8 @@ Page({
         time: data.create_time,
         oNo: data.o_no,
         goods: data.goods,
+        allTotal:data.all_total,
+        discount: data.discount,
         total: data.total
       })
     }

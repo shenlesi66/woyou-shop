@@ -1,6 +1,7 @@
 const bindPhone = require('../../config.js').bindPhone,
-      checkPhone = require('../../config.js').checkPhone,
-      event = require('../../utils/event.js')
+  checkPhone = require('../../config.js').checkPhone,
+  getCouponList = require('../../config.js').getCouponList,
+  event = require('../../utils/event.js')
 var app = getApp();
 // pages/my/my.js
 Page({
@@ -8,27 +9,29 @@ Page({
    * 页面的初始数据
    */
   data: {
-    couponNum: 10,
-    options:[
+    options: [
       {
         id: 1,
-        text:'我的订单',
-        icon:'icon-tubiaolunkuo-',
-        url:'../orders/orders'
+        text: '我的订单',
+        icon: 'icon-tubiaolunkuo-',
+        url: '../orders/orders'
       },
       {
         id: 2,
         text: '优惠券',
         icon: 'icon-youhuiquan',
-        url: '../coupon/coupon'
+        url: '../coupon/coupon',
       },
       {
         id: 3,
-        text:'意见反馈',
+        text: '意见反馈',
         icon: 'icon-xiaoxi',
         url: '../feedback/feedback'
       }
     ],
+    coupon: {
+      length: 0
+    },
     userInfo: {
       nickName: '您的昵称'
     },
@@ -44,8 +47,23 @@ Page({
         phoneType: data
       })
     })
+    //更改优惠券显示张数
+    event.on('changeCouponLength', this, function (type) {
+      let length = this.data.coupon.length
+      if (type === 'add') {
+        length = length += 1  //优惠券数量+1  type=add
+      } else {
+        length = length -= 1  //优惠券数量-1  type=minus
+      }
+      this.setData({
+        coupon: {
+          length
+        }
+      })
+    })
     //检测是否已经绑定手机
     this.handleCheckPhone()
+
     //获取用户信息
     app.handleUserInfo()
     if (app.globalData.userInfo) {
@@ -76,11 +94,12 @@ Page({
     }
   },
   onUnload: function () {
-    event.remove('changePhoneType',this)
+    event.remove('changePhoneType', this)
+    event.remove('changeCouponLength', this)
   },
   getUserInfo: function (e) {
     //允许授权之后获取用户信息(拒绝授权没有)
-    if(e.detail.userInfo){
+    if (e.detail.userInfo) {
       app.globalData.userInfo = e.detail.userInfo
       this.setData({
         userInfo: e.detail.userInfo,
@@ -101,7 +120,8 @@ Page({
           encryptedData: e.detail.encryptedData
         },
         server: bindPhone,
-        fn: function (res) {
+        fn: res => {
+          event.emit('changeCouponLength', 'add')
           event.emit('changePhoneType', true)
           wx.showModal({
             content: '绑定成功',
@@ -110,14 +130,36 @@ Page({
         }
       }
       app.handleRequestVali(options, false)
-    }  
+    }
   },
   //检查是否绑定手机
   handleCheckPhone: function () {
+    let self = this
     let options = {
       server: checkPhone,
       fn: function (res) {
-        event.emit('changePhoneType', true)
+        if (res.data.data) {
+          event.emit('changePhoneType',true)
+        }
+        //查询优惠券数量  放在onload会出现冲突
+        self.getCouponLength()
+      }
+    }
+    app.handleRequestVali(options)
+  },
+  //查询优惠券数量
+  getCouponLength: function () {
+    let self = this
+    let options = {
+      server: getCouponList,
+      fn: res => {
+        if (res.data.data) {
+          self.setData({
+            coupon: {
+              length: res.data.data.length
+            }
+          })
+        }
       }
     }
     app.handleRequestVali(options)

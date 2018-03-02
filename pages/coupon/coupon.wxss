@@ -11,6 +11,7 @@ page,.content{
 }
 .cancel{
   color: #fff;
+  font-size: 35rpx;
 }
 .item-wrapper{
   display: flex;

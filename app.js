@@ -75,7 +75,7 @@ App({
   //type=true调用函数handleRequest，false重新登录
   handleRequestVali: function (options, type=true) {
     //防止重连次数过多
-    if (this.globalData.failCount>=2){
+    if (this.globalData.failCount>2){
       wx.showModal({
         content: this.globalData.failMsg,
         showCancel: false,

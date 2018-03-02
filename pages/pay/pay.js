@@ -9,7 +9,7 @@ Page({
     disabled: false,
     bestCoupon: {
       num: 0,
-      id: null
+      id: 0
     },
     coupon: {
       tips: '' //优惠券提示
@@ -37,17 +37,17 @@ Page({
     //获取缓存购物车数据
     let cartList = app.globalData.cartList
     this.setData({
-      cartList: [
-        {
-          barcode: "49755343",
-          id: 151,
-          max: 5,
-          name: "不二家双棒巧克力24g",
-          num: 1,
-          price: "5.11"
-        }
-      ]
-      // cartList
+      // cartList: [
+      //   {
+      //     barcode: "49755343",
+      //     id: 151,
+      //     max: 5,
+      //     name: "不二家双棒巧克力24g",
+      //     num: 1,
+      //     price: "5.11"
+      //   }
+      // ]
+      cartList
     })
     this.getTotalPrice()
   },
@@ -80,7 +80,8 @@ Page({
       server: addOrderServer,//服务器地址
       uData: {
         sid: app.globalData.seller.id,//货架ID
-        goods: self.data.cartList//商品列表
+        goods: self.data.cartList,//商品列表
+        c: self.data.bestCoupon.id  //优惠券id
       }
     }
     options.fn = res => {
@@ -91,7 +92,7 @@ Page({
         let noptions = {
           server: payServer, //请求支付接口
           uData: {
-            oid //订单id
+            oid,  //订单id
           },
           //调用支付函数
           fn: res => {
@@ -99,6 +100,7 @@ Page({
             if (payData) {
               self.wxPay(payData)
             }
+            
           }
         }
         //设置oid给跳转页面使用
@@ -114,7 +116,10 @@ Page({
   wxPay: function (obj) {
     let self = this
     obj.success = res => {
-      //支付成功
+      //支付成功 优惠券数量减1
+      if (self.data.bestCoupon.id) {
+        event.emit('changeCouponLength', 'minus')
+      }
       //条状订单详情页
       let oid = self.data.oid
       wx.redirectTo({

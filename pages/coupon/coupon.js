@@ -76,7 +76,7 @@ Page({
   },
   //不使用优惠券
   nouseCoupon: function () {
-    event.emit('setCoupon', { id: null, num: 0 })
+    event.emit('setCoupon', { id: 0, num: 0 })
     wx.navigateBack({
       delta: 1
     })

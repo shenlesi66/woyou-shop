@@ -3,6 +3,20 @@ const event = require('../../utils/event'),
   getCodeServer = require('../../config').getCodeServer
 var app = getApp()
 Page({
+  data: {
+    swiper: {
+      imgUrls: [
+        '../../assets/img/banner1.jpg',
+        '../../assets/img/banner2.jpg',
+        '../../assets/img/banner3.jpg',
+      ],
+      indicatorDots: true,
+      autoplay: true,
+      interval: 5000,
+      duration: 500
+    }
+    
+  },
   //indexSellerChanged 公共更换首页货架名
   onLoad: function (options) {
     event.on('indexSellerChanged', this, function (seller) {
@@ -85,6 +99,17 @@ Page({
           showCancel: false
         })
       }
+    })
+  },
+  //重置swiper高度
+  imgInfo: function (e) {
+    let res = wx.getSystemInfoSync() //获取手机信息
+    let imgW = e.detail.width,
+        imgH = e.detail.height,
+        ratio = imgW/imgH
+    this.data.swiper.height = res.windowWidth / ratio + 'px'
+    this.setData({
+      swiper: this.data.swiper
     })
   }
 })
