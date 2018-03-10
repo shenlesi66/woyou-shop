@@ -1,0 +1,11 @@
+<!--templates/model/model.wxml-->
+<template name="msgItem">
+  <view class='model' wx:if='{{!showModel}}'>
+    <view class='mask' bindtap='model.hideModel'></view>
+    <view class='model-content-wrapper'>
+      <view class='model-content'>
+        <image src='{{img}}' class='model-img' mode='widthFix'></image>
+      </view>
+    </view>
+  </view>
+</template>

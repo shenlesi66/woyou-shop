@@ -8,7 +8,8 @@
     "pages/orderdetail/orderdetail",
     "pages/manual/manual",
     "pages/pay/pay",
-    "pages/coupon/coupon"
+    "pages/coupon/coupon",
+    "templates/model/model"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -19,7 +20,7 @@
   "tabBar": {
     "backgroundColor": "#fff",
     "color": "#000",
-    "selectedColor":"#000",
+    "selectedColor": "#000",
     "list": [
       {
         "pagePath": "pages/index/index",

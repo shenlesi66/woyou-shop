@@ -1,5 +1,7 @@
 <!--index.wxml-->
-<view class="content">
+<import src="../../templates/model/model.wxml"/>
+<view class="content" bindtap='model.hideModel'>
+<template is="msgItem" data="{{time:123,img:'../../assets/img/ad.jpg'}}"/>
   <image class='bg' src='../../assets/img/index_bg.png' mode='widthFix'></image>
   <view class='wrapper'>
     <view class='swiper-wrapper'>

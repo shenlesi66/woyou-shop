@@ -1,6 +1,7 @@
 //index.js
 const event = require('../../utils/event'),
-  getCodeServer = require('../../config').getCodeServer
+      model = require('../../utils/model'),
+      getCodeServer = require('../../config').getCodeServer
 var app = getApp()
 Page({
   data: {
@@ -8,7 +9,6 @@ Page({
       imgUrls: [
         '../../assets/img/banner1.jpg',
         '../../assets/img/banner2.jpg',
-        '../../assets/img/banner3.jpg',
       ],
       indicatorDots: true,
       autoplay: true,
