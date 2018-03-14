@@ -1,6 +1,5 @@
 /**index.wxss**/
 @import '../../assets/font/iconfont.wxss';
-@import '../../templates/model/model.wxss';
 page{
   height: 100%;
 }

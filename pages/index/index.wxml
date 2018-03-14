@@ -1,8 +1,6 @@
 <!--index.wxml-->
-<import src="../../templates/model/model.wxml"/>
-<view class="content" bindtap='model.hideModel'>
-<template is="msgItem" data="{{time:123,img:'../../assets/img/ad.jpg'}}"/>
-  <image class='bg' src='../../assets/img/index_bg.png' mode='widthFix'></image>
+<view class="content">
+  <image class='bg' src='/assets/img/index_bg.png' mode='widthFix'></image>
   <view class='wrapper'>
     <view class='swiper-wrapper'>
      <swiper indicator-dots="{{swiper.indicatorDots}}"
@@ -19,7 +17,7 @@
     <text class='scan-address-text' wx:if="{{seller.name}}">{{seller.name}}</text>
     <text class='scan-address-text' wx:else>请扫描二维码选择货架</text> 
   </view>
-  <image class='ad-img' src='../../assets/img/ad.jpg' mode='widthFix'></image>
+  <image class='ad-img' src='/assets/img/ad.jpg' mode='widthFix'></image>
    <!-- <view class='newfoods-wrapper'>
     <view class="newfoods-title-wrapper">
       <text class="newfoods-title-text">零食上新</text>

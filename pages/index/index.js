@@ -7,8 +7,8 @@ Page({
   data: {
     swiper: {
       imgUrls: [
-        '../../assets/img/banner1.jpg',
-        '../../assets/img/banner2.jpg',
+        '/assets/img/banner1.jpg',
+        '/assets/img/banner2.jpg',
       ],
       indicatorDots: true,
       autoplay: true,
@@ -27,6 +27,7 @@ Page({
     //判断是否微信扫码进入
     if (options.q) {
       let url = decodeURIComponent(options.q) //获取货架连接
+      // let url = decodeURIComponent(1) //获取货架连接
       this.wxScanToIndex(url)
     }
     //获取商家ID，商家NAME

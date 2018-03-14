@@ -1,5 +1,6 @@
 <!--pages/shopcart/shopcart.wxml-->
 <view class='content'>
+  <dialog id='dialog' content='/assets/img/activity.png'></dialog>
   <view class='code-wrapper'>
     <view class='qr-wrapper'>
       <text class='iconfont icon-dianpu'></text>  

@@ -1,5 +1,5 @@
 /* pages/my/my.wxss */
-@import '../../assets/font/iconfont.wxss';
+@import '/assets/font/iconfont.wxss';
 .userinfo {
   display: flex;
   flex-direction: column;

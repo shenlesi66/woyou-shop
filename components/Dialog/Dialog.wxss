@@ -1,0 +1,45 @@
+@import '/assets/font/iconfont.wxss';
+.dialog{
+  position: fixed;
+   height: 100%; 
+   width: 100%; 
+  top: 0;
+  left: 0;
+  z-index: 999;
+}
+.dialog-mask{
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background: rgba(0, 0, 0, .5);
+}
+.dialog-content-wrapper{
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+}
+.dialog-content{
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+.dialog-img{
+  margin-bottom: 150rpx;
+  width: 70%;
+}
+.dialog-close-wrapper{
+  position: absolute;
+  left: 50%;
+  bottom: 14%;
+  margin-left: -30rpx;
+}
+.icon-2guanbi{
+  font-size: 60rpx;
+  color: #fff;
+}

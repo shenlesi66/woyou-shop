@@ -8,8 +8,7 @@
     "pages/orderdetail/orderdetail",
     "pages/manual/manual",
     "pages/pay/pay",
-    "pages/coupon/coupon",
-    "templates/model/model"
+    "pages/coupon/coupon"
   ],
   "window": {
     "backgroundTextStyle": "light",

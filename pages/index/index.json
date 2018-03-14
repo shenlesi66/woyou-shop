@@ -1,5 +1,4 @@
 {
-  "navigationBarTitleText": "购物车",
   "usingComponents": {
     "dialog": "/components/Dialog/Dialog"
   }
