@@ -7,7 +7,6 @@ Page({
   data: {
     swiper: {
       imgUrls: [
-        '/assets/img/banner1.jpg',
         '/assets/img/banner2.jpg',
       ],
       indicatorDots: true,

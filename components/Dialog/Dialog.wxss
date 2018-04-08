@@ -29,15 +29,19 @@
   justify-content: center;
   align-items: center;
 }
+.dialog-img-wrapper{
+  position: relative;
+  width: 100%;
+  text-align: center;
+}
 .dialog-img{
-  margin-bottom: 150rpx;
   width: 70%;
 }
 .dialog-close-wrapper{
   position: absolute;
-  left: 50%;
-  bottom: 14%;
-  margin-left: -30rpx;
+  margin-top: 50rpx;
+  width: 100%;
+  text-align: center;
 }
 .icon-2guanbi{
   font-size: 60rpx;

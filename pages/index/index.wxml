@@ -2,7 +2,9 @@
 <view class="content">
   <image class='bg' src='/assets/img/index_bg.png' mode='widthFix'></image>
   <view class='wrapper'>
-    <view class='swiper-wrapper'>
+  <image class='ad-img' src='/assets/img/banner2.jpg' mode='widthFix'></image>
+  
+    <!-- <view class='swiper-wrapper'>
      <swiper indicator-dots="{{swiper.indicatorDots}}"
     autoplay="{{swiper.autoplay}}" interval="{{swiper.interval}}" duration="{{swiper.duration}}" style='height: {{swiper.height}}'>
       <block wx:for="{{swiper.imgUrls}}">
@@ -11,7 +13,7 @@
         </swiper-item>
       </block>
     </swiper> 
-  </view>    
+  </view>     -->
   <view class='scan-address theme-bg' bindtap='scanCode'>
     <text class='iconfont icon-erweima'></text>
     <text class='scan-address-text' wx:if="{{seller.name}}">{{seller.name}}</text>

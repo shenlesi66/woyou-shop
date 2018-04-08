@@ -5,14 +5,12 @@ Component({
   //有dialog本地缓存不显示弹框
   attached() {
     let self = this
-    wx.getStorage({
-      key: 'dialog',
-      success: function(res) {
-        self.setData({
-          'isShow': false
-        })
-      },
-    })
+    let type = wx.getStorageSync('dialog')
+    if(!type) {
+      this.setData({
+        isShow: true
+      })
+    }
   },
   /**
    * 组件的属性列表
@@ -42,7 +40,7 @@ Component({
    */
   data: {
     // 弹窗显示控制
-    isShow: true,
+    isShow: false,
     // 动画参数
     animationData: {}
   },

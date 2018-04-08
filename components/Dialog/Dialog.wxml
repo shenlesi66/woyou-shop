@@ -1,12 +1,12 @@
 <!--components/Dialog/Dialog.wxml-->
 <view class='dialog' animation='{{animationData}}' wx:if='{{isShow}}'>
     <view class='dialog-mask'></view>
-    <view class='dialog-content-wrapper'>
-      <view class='dialog-content'>
-        <image src='{{content}}' class='dialog-img' mode='widthFix'></image>
+    <view class='dialog-content'>
+        <view class='dialog-img-wrapper'>
+          <image src='{{content}}' class='dialog-img' mode='widthFix'></image>
+          <view class='dialog-close-wrapper'>
+            <text class='iconfont icon-2guanbi' bindtap='hideDialog'></text>
+          </view>
+        </view>
       </view>
-      <view class='dialog-close-wrapper'>
-        <text class='iconfont icon-2guanbi' bindtap='hideDialog'></text>
-      </view>
-    </view>
   </view>
