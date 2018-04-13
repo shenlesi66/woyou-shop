@@ -5,6 +5,7 @@
 }
 .goods-item-wrapper{
   display: flex;
+  align-items: center;
   padding: 37rpx 26rpx;
   background-color: #fff;
   border-bottom: 1rpx solid #b5b5b5;
@@ -13,17 +14,38 @@
 .goods-item-wrapper:last-child{
   border-bottom: none;
 }
+.goods-item-image-wrapper{
+  flex-shrink: 0;
+  margin-right: 26rpx;
+  height: 120rpx;
+  border-radius: 10rpx;
+  overflow: hidden;
+}
+.goods-item-image{
+  width: 120rpx;
+  height: 120rpx;
+}
 .goods-item-goods{
   flex: 1;
 }
 .goods-item-count{
-  margin-right: 10rpx;
+  margin: 0 20rpx;
   font-weight: 700;
 }
-.goods-item-price{
-  flex-basis: 150rpx;
+.goods-item-price-wrapper{
+  position: relative;
+  flex-basis: 120rpx;
   text-align: right;
   font-weight: 700;  
+  
+}
+.btm-price,.btm-price-val{
+  position: absolute;
+  bottom: -20rpx;
+  right: 0;
+  font-size: 18rpx;
+  color: #a0a0a0;
+  text-decoration: line-through;
 }
 .price-wrapper{
   background-color: #fff;
@@ -48,6 +70,10 @@
 .price-key{
   flex: 1;
 }
+.price-val-wrapper{
+  position: relative;
+  font-weight: 700;
+}
 .price-val{
   font-weight: 700;
 }
@@ -70,6 +96,12 @@
   background-color: #fff;
   text-align: center;
   line-height: 125rpx;
+}
+.pay-left-price{
+  margin-left: 8rpx;
+  font-size: 20rpx;
+  text-decoration: line-through;
+  color: #a0a0a0;
 }
 .pay-right-wrapper{
   flex: 2;

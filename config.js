@@ -45,7 +45,10 @@ var config = {
   getBestCoupon: `${host}/coupon/one`,
 
   //获取能使用的优惠券
-  getAllCoupon: `${host}/coupon/all`
+  getAllCoupon: `${host}/coupon/all`,
+
+  //获取轮播图链接
+  getSwiper: `${host}/banner/index`
 };
 
 module.exports = config

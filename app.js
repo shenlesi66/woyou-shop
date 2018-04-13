@@ -21,12 +21,13 @@ App({
     })
   },
   globalData: {
-    userInfo: null,
-    isNavigating: false,   
-    failCount: 0,
-    cartList: [],
-    token: '',
-    failMsg: ''
+    userInfo: null,   //用户信息
+    isNavigating: false,  //防止多次点击 
+    failCount: 0,   //请求失败次数
+    cartList: [],   //购物车列表
+    token: '', 
+    failMsg: '',   //请求失败消息,
+    bindPhone: ''    //是否绑定手机
   },
   // 登录
   handleLogin: function (options) {
@@ -50,9 +51,11 @@ App({
                 })
                 return
               }
-              //token存入缓存
-              let token = res.data.data.token//服务器token
-              this.globalData.token = token //token写入data
+              this.globalData.bindPhone = res.data.data.is_bind //是否绑定手机
+              if(this.bindPhoneReadyCallBack) {
+                this.bindPhoneReadyCallBack(res.data.data.is_bind)
+              }
+              this.globalData.token = res.data.data.token //token写入data
               //token不一致重新调用后台接口
               if (options) {
                 this.handleRequestVali(options, true)
@@ -259,7 +262,6 @@ App({
           success: res => {
             // 可以将 res 发送给后台解码出 unionId
             this.globalData.userInfo = res.userInfo
-
             // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
             // 所以此处加入 callback 以防止这种情况
             if (this.userInfoReadyCallback) {
@@ -276,8 +278,10 @@ App({
         max = res.num < 99 ? data.num : 99
     let newGoods = {
       id: data.id,
+      image: data.image,
       barcode: data.barcode,
       name: data.name,
+      member_price: data.member_price,
       price: data.price,
       num: 1,
       max

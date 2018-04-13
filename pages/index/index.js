@@ -1,23 +1,22 @@
 //index.js
 const event = require('../../utils/event'),
-      model = require('../../utils/model'),
-      getCodeServer = require('../../config').getCodeServer
+  getCodeServer = require('../../config').getCodeServer,
+  getSwiper = require('../../config').getSwiper
 var app = getApp()
 Page({
   data: {
     swiper: {
-      imgUrls: [
-        '/assets/img/banner2.jpg',
-      ],
+      imgData: [],
       indicatorDots: true,
       autoplay: true,
       interval: 5000,
       duration: 500
     }
-    
+
   },
   //indexSellerChanged 公共更换首页货架名
   onLoad: function (options) {
+    this.getSwiper()  //轮播图
     event.on('indexSellerChanged', this, function (seller) {
       this.setData({
         seller
@@ -61,9 +60,9 @@ Page({
   },
   //扫描货架二维码或者商品条形码
   scanCode: function () {
-    let content = app.globalData.seller 
-    ? '请扫描货架二维码或者商品条形码' 
-    : '请扫描货架二维码'
+    let content = app.globalData.seller
+      ? '请扫描货架二维码或者商品条形码'
+      : '请扫描货架二维码'
     wx.scanCode({
       success: function (res) {
         let options = {
@@ -75,17 +74,17 @@ Page({
         }
         switch (res.scanType) {
           case 'QR_CODE':
-              options.url = res.result
-              app.handleScanQrCode(options)
-          break
+            options.url = res.result
+            app.handleScanQrCode(options)
+            break
           case 'EAN_13':
             options.barcode = res.result * 1
             app.handleScanBarCode(options)
-          break
+            break
           case 'EAN_8':
             options.barcode = res.result * 1
             app.handleScanBarCode(options)
-          break
+            break
           default:
             wx.showModal({
               content,
@@ -105,11 +104,37 @@ Page({
   imgInfo: function (e) {
     let res = wx.getSystemInfoSync() //获取手机信息
     let imgW = e.detail.width,
-        imgH = e.detail.height,
-        ratio = imgW/imgH
+      imgH = e.detail.height,
+      ratio = imgW / imgH
     this.data.swiper.height = res.windowWidth / ratio + 'px'
     this.setData({
       swiper: this.data.swiper
     })
-  }
+  },
+  //获取轮播图地址
+  getSwiper() {
+    let self = this,
+      options = {
+        server: getSwiper,
+        fn(res) {
+          let data = res.data.data,swiper,imgData = []
+          for (let i = 0; i < data.length; i++) {
+            let o = {
+              id: data[i].create_id,
+              url: data[i].image,
+              links: data[i].links
+            }
+            imgData.push(o)
+          }
+          self.setData({
+            'swiper.imgData': imgData
+          })
+        }
+      }
+    app.handleRequest(options)
+  },
+  //跳转web-view
+  navigateToWeb(e) {
+    app.handleForward(e)
+  },
 })

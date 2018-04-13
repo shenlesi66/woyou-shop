@@ -1,47 +1,112 @@
 <!--pages/pay/pay.wxml-->
 <!--pages/orderdetail/orderdetail.wxml-->
 <view class='content'>
-  <view class='goods-wrapper'>
-    <block wx:for='{{cartList}}' wx:key='item.id'>
-      <view class='goods-item-wrapper'>
-        <text class='goods-item-goods'>{{item.name}}</text>
-        <text class='goods-item-count theme-color'>{{item.num}}</text>
-        <text class='goods-item-price theme-color'>¥{{item.price}}</text>
-      </view>
-    </block>
-  </view>
-  <view class='price-total-wrapper'>
-    <view class='price-detail-wrapper'>
-      <view class='price-detail-item-wrapper'>
-        <text class='price-key'>商品总额</text>
-        <text class='price-val theme-color'>¥{{totalPrice}}</text>
+  <block wx:if='{{bindPhone && isFri}}'>
+    <view class='goods-wrapper'>
+      <block wx:for='{{cartList}}' wx:key='item.id'>
+        <view class='goods-item-wrapper'>
+          <view class='goods-item-image-wrapper'>
+            <image class='goods-item-image' src='{{item.image}}'></image>
+          </view>
+          <text class='goods-item-goods'>{{item.name}}</text>
+          <text class='goods-item-count theme-color'>{{item.num}}</text>
+          <view class='goods-item-price-wrapper'>
+            <block wx:if='{{item.member_price !== item.price}}'>
+              <text class='top-price theme-color'>¥{{item.member_price}}</text>
+              <text class='btm-price'>￥{{item.price}}</text>
+            </block>
+            <text wx:else class='top-price theme-color'>¥{{item.price}}</text>
+          </view>
+        </view>
+      </block>
+    </view>
+    <view class='price-total-wrapper'>
+      <view class='price-detail-wrapper'>
+        <view class='price-detail-item-wrapper'>
+          <text class='price-key'>商品总额</text>
+          <view class='price-val-wrapper'>
+            <block wx:if='{{totalMemberPrice!==totalPrice}}'>
+              <text class='theme-color'>¥{{totalMemberPrice}}</text>
+              <text class='btm-price-val'>¥{{totalPrice}}</text>
+            </block>
+            <text wx:else class='theme-color'>¥{{totalMemberPrice}}</text>
+          </view>
+        </view>
       </view>
     </view>
-  </view>
     <view class='price-wrapper'>
-    <view class='price-detail-wrapper' bindtap='navigateToPage' data-url='../coupon/coupon?price={{totalPrice}}&oupon={{bestCoupon.num}}'>
-       <view class='price-detail-item-wrapper'>
-        <text class='price-key'>优惠券</text>
-        <text class='price-val theme-color' wx:if='{{bestCoupon.id}}'>-¥{{bestCoupon.num}}</text>
-        <text wx:else class='price-val no-coupon-text'>{{coupon.tips}}</text>
-        <text class='iconfont icon-you'></text>
-      </view> 
-      <!-- <view class='price-detail-item-wrapper'>
+      <view class='price-detail-wrapper' bindtap='navigateToPage' data-url='../coupon/coupon?price={{totalMemberPrice}}&oupon={{bestCoupon.num}}'>
+        <view class='price-detail-item-wrapper'>
+          <text class='price-key'>优惠券</text>
+          <text class='price-val theme-color' wx:if='{{bestCoupon.id}}'>-¥{{bestCoupon.num}}</text>
+          <text wx:else class='price-val no-coupon-text'>{{coupon.tips}}</text>
+          <text class='iconfont icon-you'></text>
+        </view>
+        <!-- <view class='price-detail-item-wrapper'>
         <text class='price-key'>特价减免</text>
         <text class='price-val theme-color'>¥{{activity}}</text>
       </view>   -->
+      </view>
     </view>
-   </view>    
-  <view class='tips-wrapper theme-color'>
-    <text>温馨提示：支付完成后请携带好购买的商品</text>
-  </view>
-  <view class='pay-wrapper'>
-    <view class='pay-left-wrapper'>
-      <text>实际支付：</text>
-      <text class='pay-left-price theme-color'>¥{{bestCoupon.num?payPrice:totalPrice}}</text>
+    <view class='tips-wrapper theme-color'>
+      <text>温馨提示：支付完成后请携带好购买的商品</text>
     </view>
-    <view class='pay-right-wrapper' bindtap='addOrder'>
-      <button class='pay-btn  theme-bg' disabled='{{disabled}}'>确认支付</button>
+    <view class='pay-wrapper'>
+      <view class='pay-left-wrapper'>
+        <text>实际支付：</text>
+        <text class='theme-color'>¥{{bestCoupon.num?payMemberPrice:totalMemberPrice}}</text>
+      </view>
+      <view class='pay-right-wrapper' bindtap='addOrder'>
+        <button class='pay-btn  theme-bg' disabled='{{disabled}}'>确认支付</button>
+      </view>
     </view>
-  </view>
+  </block>
+  <block wx:else>
+    <view class='goods-wrapper'>
+      <block wx:for='{{cartList}}' wx:key='item.id'>
+        <view class='goods-item-wrapper'>
+          <view class='goods-item-image-wrapper'>
+            <image class='goods-item-image' src='{{item.image}}'></image>
+          </view>
+          <text class='goods-item-goods'>{{item.name}}</text>
+          <text class='goods-item-count theme-color'>{{item.num}}</text>
+          <view class='goods-item-price-wrapper'>
+            <text class='top-price theme-color'>¥{{item.price}}</text>
+          </view>
+        </view>
+      </block>
+    </view>
+    <view class='price-total-wrapper'>
+      <view class='price-detail-wrapper'>
+        <view class='price-detail-item-wrapper'>
+          <text class='price-key'>商品总额</text>
+          <view class='price-val-wrapper'>
+            <text class='theme-color'>¥{{totalPrice}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class='price-wrapper'>
+      <view class='price-detail-wrapper' bindtap='navigateToPage' data-url='../coupon/coupon?price={{totalPrice}}&oupon={{bestCoupon.num}}'>
+        <view class='price-detail-item-wrapper'>
+          <text class='price-key'>优惠券</text>
+          <text class='price-val theme-color' wx:if='{{bestCoupon.id}}'>-¥{{bestCoupon.num}}</text>
+          <text wx:else class='price-val no-coupon-text'>{{coupon.tips}}</text>
+          <text class='iconfont icon-you'></text>
+        </view>
+      </view>
+    </view>
+    <view class='tips-wrapper theme-color'>
+      <text>温馨提示：支付完成后请携带好购买的商品</text>
+    </view>
+    <view class='pay-wrapper'>
+      <view class='pay-left-wrapper'>
+        <text>实际支付：</text>
+        <text class='theme-color'>¥{{bestCoupon.num?payPrice:totalPrice}}</text>
+      </view>
+      <view class='pay-right-wrapper' bindtap='addOrder'>
+        <button class='pay-btn  theme-bg' disabled='{{disabled}}'>确认支付</button>
+      </view>
+    </view>
+  </block>
 </view>

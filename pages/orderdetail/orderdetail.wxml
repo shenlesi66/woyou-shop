@@ -17,6 +17,9 @@
     </view>
     <block wx:for='{{goods}}' wx:key='item.oid'>
       <view class='goods-item-wrapper'>
+        <view class='goods-item-image-wrapper'>
+          <image class='goods-item-image' src='{{item.image}}'></image>
+        </view>
         <text class='goods-item-goods'>{{item.name}}</text>
         <text class='goods-item-count theme-color'>{{item.num}}</text>
         <text class='goods-item-price theme-color'>¥{{item.price}}</text>

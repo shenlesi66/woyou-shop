@@ -14,6 +14,16 @@ const formatNumber = n => {
   return n[1] ? n : '0' + n
 }
 
+//获取星期
+const getFri = function(){
+  let week = new Date().getDay()
+  if (week === 5){
+    return true
+  } else {
+    return false
+  }
+    
+}
 module.exports = {
-  formatTime: formatTime
+  getFri
 }

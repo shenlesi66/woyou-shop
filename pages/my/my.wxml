@@ -7,7 +7,7 @@
       <view class="bindPhone-wrapper"></view>
       <text class="userinfo-nickname">{{userInfo.nickName}}</text>
       <view class="bindPhone-wrapper">
-        <block wx:if="{{phoneType}}">
+        <block wx:if="{{bindPhone}}">
           <image class='bindPhone-icon' src='../../assets/img/bindPhone-icon.png'></image>
         </block>
         <block wx:else>

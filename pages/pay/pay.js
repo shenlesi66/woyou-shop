@@ -2,7 +2,8 @@
 const addOrderServer = require('../../config').addOrderServer,
   payServer = require('../../config').payServer,
   getBestCoupon = require('../../config').getBestCoupon,
-  event = require('../../utils/event')
+  event = require('../../utils/event'),
+  getFri = require('../../utils/util.js').getFri
 var app = getApp()
 Page({
   data: {
@@ -14,15 +15,25 @@ Page({
     coupon: {
       tips: '' //优惠券提示
     },
+    isFri: false,
+    bindPhone: '',
     totalPrice: 0, //商品总额
-    payPrice: 0, //实际支付金额
+    totalMemberPrice: 0, //商品总额
+    payPrice: 0, //实际支付原价
+    payMemberPrice: 0, //实际支付会员价
   },
   onLoad: function () {
-    //页面通信
+    //优惠券页面通信
+    let bindPhone = app.globalData.bindPhone
+    this.setData({
+      bindPhone,
+      isFri: getFri()
+    })
     event.on('setCoupon', this, function (data) {
       this.setData({
         bestCoupon: data,
-        payPrice: (this.data.totalPrice - data.num).toFixed(2)
+        payPrice: (this.data.totalPrice - data.num).toFixed(2),
+        payMemberPrice: (this.data.totalMemberPrice - data.num).toFixed(2)
       })
     })
   },
@@ -34,8 +45,9 @@ Page({
     this.getBestCoupon()
   },
   onShow: function (e) {
-    //获取缓存购物车数据
-    let cartList = app.globalData.cartList
+    //获取购物车数据,绑定手机状态
+    let appData = app.globalData,
+        cartList = appData.cartList
     this.setData({
       // cartList: [
       //   {
@@ -44,7 +56,9 @@ Page({
       //     max: 5,
       //     name: "不二家双棒巧克力24g",
       //     num: 1,
-      //     price: "5.11"
+      //     price: 0.1,
+      //     image: 'https://wurenbianli.oss-cn-hangzhou.aliyuncs.com/uploads/default.png',
+      //     member_price: 0.09
       //   }
       // ]
       cartList
@@ -55,18 +69,19 @@ Page({
   getTotalPrice: function (e) {
     const cartList = this.data.cartList
     let count = cartList.length
-    let totalPrice = 0
+    let totalPrice = 0,totalMemberPrice = 0
     //循环价格*数量
     cartList.map((item) => {
-      let price = item.price
-      let num = item.num
-      totalPrice += price * num
+      totalPrice += item.price * item.num,
+      totalMemberPrice += item.member_price * item.num
     })
     //截取两位小数  *1转换为number
-    totalPrice = totalPrice.toFixed(2) * 1
+    totalPrice = totalPrice.toFixed(2) * 1,
+    totalMemberPrice = totalMemberPrice.toFixed(2) * 1
     //减去优惠券后的总金额
     this.setData({
-      totalPrice
+      totalPrice,
+      totalMemberPrice
     })
   },
   //确认支付
@@ -116,9 +131,9 @@ Page({
   wxPay: function (obj) {
     let self = this
     obj.success = res => {
-      //支付成功 优惠券数量减1
+      //支付成功 减去已使用优惠券显示数量
       if (self.data.bestCoupon.id) {
-        event.emit('changeCouponLength', 'minus')
+        event.emit('changeCouponLength')
       }
       //条状订单详情页
       let oid = self.data.oid
@@ -149,11 +164,16 @@ Page({
   },
   //获取适用优惠券
   getBestCoupon: function () {
-    let self = this
+    let price = 0,self = this
+    if (this.data.bindPhone && this.data.isFri) {
+      price = this.data.totalMemberPrice
+    } else {
+      price = this.data.totalPrice
+    }
     let options = {
       server: getBestCoupon,
       uData: {
-        price: this.data.totalPrice
+        price
       },
       fn: function (res) {
         if (res.data.data) {
@@ -163,7 +183,8 @@ Page({
               num: bestCoupon.num2,
               id: bestCoupon.id
             },
-            payPrice: (self.data.totalPrice - bestCoupon.num2).toFixed(2)
+            payPrice: (self.data.totalPrice - bestCoupon.num2).toFixed(2),
+            payMemberPrice: (self.data.totalMemberPrice - bestCoupon.num2).toFixed(2)
           })
         } else {
           self.setData({

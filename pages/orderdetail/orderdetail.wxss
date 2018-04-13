@@ -19,6 +19,7 @@
 }
 .goods-item-wrapper{
   display: flex;
+  align-items: center;
   padding: 37rpx 26rpx;
   background-color: #fff;
   border-bottom: 1rpx solid #b5b5b5;
@@ -31,11 +32,11 @@
   flex: 1;
 }
 .goods-item-count{
-  margin-right: 10rpx;
+  margin: 0 20rpx;
   font-weight: 700;
 }
 .goods-item-price{
-  flex-basis: 150rpx;
+  flex-basis: 120rpx;
   text-align: right;
   color: #e51c23;   
   font-weight: 700;  
@@ -65,4 +66,14 @@
 }
 .price-val{
   font-weight: 700;
+}
+.goods-item-image-wrapper{
+  margin-right: 26rpx;
+  height: 120rpx;
+  border-radius: 10rpx;
+  overflow: hidden;
+}
+.goods-item-image{
+  width: 120rpx;
+  height: 120rpx;
 }

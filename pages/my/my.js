@@ -1,5 +1,4 @@
 const bindPhone = require('../../config.js').bindPhone,
-  checkPhone = require('../../config.js').checkPhone,
   getCouponList = require('../../config.js').getCouponList,
   event = require('../../utils/event.js')
 var app = getApp();
@@ -35,35 +34,36 @@ Page({
     userInfo: {
       nickName: '您的昵称'
     },
+    bindPhone: '',
     phoneType: false,
     hasUserInfo: false,
     canIUse: wx.canIUse('button.open-type.getUserInfo')
   },
   //事件处理函数
   onLoad: function () {
-    //更改手机绑定状态
-    event.on('changePhoneType', this, function (data) {
+    let appData = app.globalData
+    //是否绑定手机 判断网络延迟
+    if (appData.bindPhone !== '') {
       this.setData({
-        phoneType: data
+        bindPhone: appData.bindPhone
+      })
+    } else {
+      app.bindPhoneReadyCallBack = res => {
+        this.setData({
+          bindPhone: res
+        })
+      }
+    }
+    //更改手机绑定状态
+    event.on('changeBindPhone', this, function (data) {
+      this.setData({
+        bindPhone: data
       })
     })
     //更改优惠券显示张数
-    event.on('changeCouponLength', this, function (type) {
-      let length = this.data.coupon.length
-      if (type === 'add') {
-        length = length += 1  //优惠券数量+1  type=add
-      } else {
-        length = length -= 1  //优惠券数量-1  type=minus
-      }
-      this.setData({
-        coupon: {
-          length
-        }
-      })
+    event.on('changeCouponLength', this, function () {
+      this.getCouponLength()
     })
-    //检测是否已经绑定手机
-    this.handleCheckPhone()
-
     //获取用户信息
     app.handleUserInfo()
     if (app.globalData.userInfo) {
@@ -92,9 +92,11 @@ Page({
         }
       })
     }
+    //获取优惠券数量
+    this.getCouponLength()
   },
   onUnload: function () {
-    event.remove('changePhoneType', this)
+    event.remove('changeBindPhone', this)
     event.remove('changeCouponLength', this)
   },
   getUserInfo: function (e) {
@@ -113,6 +115,7 @@ Page({
   },
   //获取用户手机号码
   getPhoneNumber: function (e) {
+    let self = this
     if (e.detail.errMsg !== 'getPhoneNumber:fail user deny') {
       let options = {
         uData: {
@@ -121,8 +124,9 @@ Page({
         },
         server: bindPhone,
         fn: res => {
-          event.emit('changeCouponLength', 'add')
-          event.emit('changePhoneType', true)
+          self.getCouponLength()
+          event.emit('changeBindPhone', 1)
+          event.emit('shopCartBindPhoneChange', 1)
           wx.showModal({
             content: '绑定成功',
             showCancel: false
@@ -132,31 +136,17 @@ Page({
       app.handleRequestVali(options, false)
     }
   },
-  //检查是否绑定手机
-  handleCheckPhone: function () {
-    let self = this
-    let options = {
-      server: checkPhone,
-      fn: function (res) {
-        if (res.data.data) {
-          event.emit('changePhoneType',true)
-        }
-        //查询优惠券数量  放在onload会出现冲突
-        self.getCouponLength()
-      }
-    }
-    app.handleRequestVali(options)
-  },
   //查询优惠券数量
   getCouponLength: function () {
     let self = this
     let options = {
       server: getCouponList,
       fn: res => {
-        if (res.data.data) {
+        let data = res.data.data
+        if (data) {
           self.setData({
             coupon: {
-              length: res.data.data.length
+              length: data.length
             }
           })
         }

@@ -1,42 +1,100 @@
 <!--pages/shopcart/shopcart.wxml-->
 <view class='content'>
-   <dialog id='dialog' content='/assets/img/activity.png'></dialog> 
+  <dialog id='dialog' content='/assets/img/activity.png'></dialog>
   <view class='code-wrapper'>
     <view class='qr-wrapper'>
-      <text class='iconfont icon-dianpu'></text>  
-      <text class='qr-text'>{{seller.name?seller.name:'请扫描二维码选择货架'}}</text> 
+      <text class='iconfont icon-dianpu'></text>
+      <text class='qr-text'>{{seller.name?seller.name:'请扫描二维码选择货架'}}</text>
     </view>
     <view class='manual-wrapper' bindtap='navigateToPage' data-url='../manual/manual'>
       <text class='iconfont icon-tiaoxingma'></text>
     </view>
   </view>
-  <view class='goodslist-wrapper'  wx:if='{{cartList.length}}'>
-    <scroll-view scroll-y style="height: 100%;">
-      <view class='goods-wrapper' wx:for='{{cartList}}' wx:key="item.id">
-        <text class='goods-name'>{{item.name}}</text>
-        <!-- <text class='goods-spec'>规格：{{item.spec}}</text> -->
-        <text class='goods-price theme-color'>¥{{item.price}}</text>
-        <view class='goods-cartcontrol-wrapper'>
-          <image src='../../assets/img/icon_jian.png' class='icon-cart'  data-index='{{index}}' bindtap='minusNum'></image>
-          <image src='../../assets/img/icon_ipt.png' class='icon-ipt'></image>
-            <input type='number' class='goods-cartnum' value='{{item.num}}' bindblur='changeNum' data-index='{{index}}' maxlength='2'></input>  
-          <image src='../../assets/img/icon_jia.png' class='icon-cart' bindtap='addNum' data-index='{{index}}'></image>
+  <view class='goodslist-wrapper' wx:if='{{cartList.length}}'>
+    <block wx:if='{{bindPhone && isFri}}'>
+      <scroll-view scroll-y style="height: 100%;">
+        <view class='goods-wrapper' wx:for='{{cartList}}' wx:key="item.id">
+          <view class='goods-info-wrapper'>
+            <view class='goods-img-wrapper'>
+              <image class='goods-img' src='{{item.image}}'></image>
+              <!-- <view class='tag-wrapper theme-bg'>
+              <text class='tag-text'>6</text>
+              <text class='tag-text'>折</text>
+            </view> -->
+            </view>
+            <view class='goods-detail-wrapper'>
+              <view class='goods-name'>{{item.name}}</view>
+              <!-- <text class='goods-spec'>规格：{{item.spec}}</text> -->
+              <view>
+                <text class='money-text theme-color'>￥</text>
+                <block wx:if='{{item.member_price !== item.price}}'>
+                  <text class='goods-left-price theme-color'>{{item.member_price}}</text>
+                  <text class='goods-right-price'>¥{{item.price}}</text>
+                </block>
+                <text wx:else class='goods-left-price theme-color'>{{item.member_price}}</text>
+              </view>
+            </view>
+          </view>
+          <view class='goods-cartcontrol-wrapper'>
+            <image src='../../assets/img/icon_jian.png' class='icon-cart' data-index='{{index}}' bindtap='minusNum'></image>
+            <image src='../../assets/img/icon_ipt.png' class='icon-ipt'></image>
+            <input type='number' class='goods-cartnum' value='{{item.num}}' bindblur='changeNum' data-index='{{index}}' maxlength='2'></input>
+            <image src='../../assets/img/icon_jia.png' class='icon-cart' bindtap='addNum' data-index='{{index}}'></image>
+          </view>
+        </view>
+      </scroll-view>
+      <view class='cartcontrol-wrapper'>
+        <view class='cartcontrol-top-wrapper'>合计：
+          <text class='theme-color'>¥{{totalMemberPrice}}</text>
+        </view>
+        <view class='cartcontrol-btm-wrapper'>
+          <view class='cartcontrol-btm-left'>
+            <button class='cartcontrol-btm-left-btn theme-color' bindtap='scanBarCode'>继续添加</button>
+          </view>
+          <view class='cartcontrol-btm-right'>
+            <button class='cartcontrol-btm-right-btn theme-bg' bindtap='navigateToPage' data-url='../pay/pay'>结算（{{goodsCount}}）</button>
+          </view>
         </view>
       </view>
-    </scroll-view>
-    <view class='cartcontrol-wrapper'>
-      <view class='cartcontrol-top-wrapper'>合计：
+    </block>
+    <block wx:else>
+      <scroll-view scroll-y style="height: 100%;">
+        <view class='goods-wrapper' wx:for='{{cartList}}' wx:key="item.id">
+          <view class='goods-info-wrapper'>
+            <view class='goods-img-wrapper'>
+              <image class='goods-img' src='{{item.image}}'></image>
+            </view>
+            <view class='goods-detail-wrapper'>
+              <view class='goods-name'>{{item.name}}</view>
+              <!-- <text class='goods-spec'>规格：{{item.spec}}</text> -->
+              <view>
+                <text class='money-text theme-color'>￥</text>
+                <text class='goods-left-price theme-color'>{{item.price}}</text>
+              </view>
+            </view>
+          </view>
+          <view class='goods-cartcontrol-wrapper'>
+            <image src='../../assets/img/icon_jian.png' class='icon-cart' data-index='{{index}}' bindtap='minusNum'></image>
+            <image src='../../assets/img/icon_ipt.png' class='icon-ipt'></image>
+            <input type='number' class='goods-cartnum' value='{{item.num}}' bindblur='changeNum' data-index='{{index}}' maxlength='2'></input>
+            <image src='../../assets/img/icon_jia.png' class='icon-cart' bindtap='addNum' data-index='{{index}}'></image>
+          </view>
+        </view>
+      </scroll-view>
+      <view class='cartcontrol-wrapper'>
+        <view class='cartcontrol-top-wrapper'>合计：
           <text class='theme-color'>¥{{totalPrice}}</text>
-      </view>  
-      <view class='cartcontrol-btm-wrapper'>
-        <view class='cartcontrol-btm-left'>
-         <button class='cartcontrol-btm-left-btn theme-color' bindtap='scanBarCode'>继续添加</button> 
         </view>
-        <view class='cartcontrol-btm-right'>
-          <button class='cartcontrol-btm-right-btn theme-bg' bindtap='navigateToPage' data-url='../pay/pay'>结算（{{goodsCount}}）</button>
+        <view class='cartcontrol-btm-wrapper'>
+          <view class='cartcontrol-btm-left'>
+            <button class='cartcontrol-btm-left-btn theme-color' bindtap='scanBarCode'>继续添加</button>
+          </view>
+          <view class='cartcontrol-btm-right'>
+            <button class='cartcontrol-btm-right-btn theme-bg' bindtap='navigateToPage' data-url='../pay/pay'>结算（{{goodsCount}}）</button>
+          </view>
         </view>
       </view>
-    </view>
+    </block>
   </view>
   <view class='nogoods-wrapper' wx:else>
     <view class='nogoods-bg-wrapper'>

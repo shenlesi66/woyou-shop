@@ -7,7 +7,7 @@
       </view> 
       <view class='order-info-wrapper'>
         <view class='order-info-left-wrapper'>
-          <block wx:for='{{item.goods}}'>
+          <block wx:for='{{item.goods}}' wx:key='{{*this}}'>
             <text class='order-info-goods'>{{item.name}}</text>
           </block>
           <text class='order-info-item'>共{{item.goodsCount}}件商品</text>

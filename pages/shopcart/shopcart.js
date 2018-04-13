@@ -1,6 +1,7 @@
 // pages/shopcart/shopcart.js
 const getCodeServer = require('../../config').getCodeServer,
   getGoodsServer = require('../../config').getGoodsServer,
+  getFri = require('../../utils/util.js').getFri,
   event = require('../../utils/event')
 var app = getApp()
 Page({
@@ -9,8 +10,23 @@ Page({
    */
   data: {
     seller: null,
-    cartList: [],
-    totalPrice: 0
+    cartList: [
+      // {
+      //   id: 165,
+      //   barcode: 10086,
+      //   name: '测试商品',
+      //   price: 3,
+      //   member_price: 1,
+      //   num: 1,
+      //   max: 73,
+      //   goodsCount: 1,
+      //   image: '/assets/img/goods.png'
+      // }
+    ],
+    bindPhone: 0,
+    isFri: false, //周五会员日
+    totalPrice: 0,
+    memberTotalPrice: 0
   },
   /**
  * 生命周期函数--监听页面加载
@@ -19,6 +35,10 @@ Page({
  * cartSellerChanged 更新购物车商家名称
  */
   onLoad: function (options) {
+    //判断星期五
+    this.setData({
+      isFri: getFri()
+    })
     event.on('cartListChanged', this, function (data) {
       this.setData({
         cartList: data
@@ -30,7 +50,25 @@ Page({
         seller
       })
     })
+    event.on('shopCartBindPhoneChange', this, function (data) {
+      this.setData({
+        bindPhone: data
+      })
+      this.getTotalPrice();
+    })
     let appData = app.globalData
+    //是否绑定手机 判断网络延迟
+    if (appData.bindPhone!==''){
+      this.setData({
+        bindPhone: appData.bindPhone
+      })
+    } else {
+      app.bindPhoneReadyCallBack= res => {
+        this.setData({
+          bindPhone: res
+        })
+      }
+    }
     //获取货架信息
     if (appData.seller) {
       this.setData({
@@ -49,6 +87,7 @@ Page({
   onUnload: function () {
     event.remove('cartListChanged', this);
     event.remove('cartSellerChanged', this);
+    event.remove('shopCartBindPhoneChange', this);
   },
   //点击跳转页面
   navigateToPage: function (e) {
@@ -149,17 +188,18 @@ Page({
       goodsCount += item.num
       item.goodsCount = goodsCount
     })
-    let totalPrice = 0
+    let totalPrice = 0, totalMemberPrice = 0
     //循环价格*数量
     cartList.map((item) => {
-      let price = item.price
-      let num = item.num
-      totalPrice += price * num
+      totalPrice += item.price * item.num,
+      totalMemberPrice += item.member_price * item.num
     })
     //截取两位小数
-    totalPrice = totalPrice.toFixed(2)
+    totalPrice = totalPrice.toFixed(2) * 1,
+    totalMemberPrice = totalMemberPrice.toFixed(2) * 1
     this.setData({
       totalPrice,
+      totalMemberPrice,
       goodsCount
     })
   },
@@ -220,5 +260,6 @@ Page({
         }
       })
     }
-  }
+  },
+ 
 })
